@@ -449,6 +449,7 @@ export const designs = {
     "p": {
       "back": "Back",
       "frontSideDart": "Front",
+      "sleeve": "Sleeve",
       "bandTie": "Band Tie",
       "cup": "Cup",
       "neckTie": "Neck Tie"
@@ -653,7 +654,8 @@ export const designs = {
     "d": "Bella is a basic body block for people with breasts.",
     "p": {
       "back": "Back",
-      "frontSideDart": "Front"
+      "frontSideDart": "Front",
+      "sleeve": "Sleeve"
     },
     "s": {
       "cbSeamBustBelowWaist.t": "Bust height compromised at center back",
@@ -751,6 +753,10 @@ export const designs = {
       "highBustWidth": {
         "t": "High bust width",
         "d": "Allows you to tweak the high bust width at the front"
+      },
+      "bellaSleeve": {
+        "t": "Sleeve",
+        "d": "Add sleeves to the garment"
       }
     }
   },
@@ -2981,6 +2987,8 @@ export const designs = {
       "pocketflap": "Pocket flap",
       "underCollar": "Under collar",
       "upperCollar": "Upper collar",
+      "topSleeve": "Topsleeve",
+      "underSleeve": "Undersleeve",
       "waistband": "Waistband"
     },
     "o": {
