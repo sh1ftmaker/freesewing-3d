@@ -386,7 +386,7 @@ export const base = {
     'bustSpan',
   ],
   options: {
-    length: { pct: 15, min: 0, max: 100, menu: 'fit' },
+    length: { pct: 0, min: 0, max: 100, menu: 'fit' },
     neckWidthFront: 0.17,
     neckHeightFront: { pct: 35, min: 25, max: 80, menu: 'style' },
     neckHeightBack: { pct: 17, min: 10, max: 25, menu: 'style' },
