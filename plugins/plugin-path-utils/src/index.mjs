@@ -95,6 +95,8 @@ function loadPaths(configuredPaths, allPaths, log) {
       }
     } else if (configuredPath && configuredPath.ops) {
       result.push(configuredPath)
+    } else if (configuredPath === false) {
+      result.push(false)
     } else if (configuredPath !== null) {
       log.error(`Path "${configuredPath}" is not a valid path`)
     } else {
@@ -128,8 +130,8 @@ const joinMacro = function (conf, props) {
 
   // remove intersecting sections of adjacent paths that e.g. occur when offsetting a concave corner
   paths.forEach(function (path, index) {
-    if (path !== null) {
-      if (paths[prevPathIndex] !== null) {
+    if (path !== null && path !== false) {
+      if (paths[prevPathIndex] !== null && paths[prevPathIndex] !== false) {
         // check intersection
         const intersections = paths[prevPathIndex].intersects(path)
         if (intersections.length > 0) {
@@ -148,6 +150,9 @@ const joinMacro = function (conf, props) {
   })
 
   paths.forEach(function (path, index) {
+    if (path === false) {
+      return
+    }
     if (path !== null) {
       const prevPath = paths[prevPathIndex]
       if (prevPath !== null) {
@@ -206,7 +211,11 @@ const offsetMacro = function (conf, props) {
     }
     paths = loadPaths(paths, props.paths, log)
     for (const path of paths) {
-      if (path == null) {
+      if (path === false) {
+        segments.push(false)
+        continue
+      }
+      if (path === null) {
         if (firstPath === 'unset') {
           firstPath = null
         }
@@ -222,6 +231,7 @@ const offsetMacro = function (conf, props) {
           segments.push(new Path().move(path.start()).line(path.start()))
         }
         const division = path.divide()
+        let divisionElementAdded = false
         for (const divisionElement of division) {
           if (firstPath === 'unset') {
             firstPath = divisionElement
@@ -237,7 +247,9 @@ const offsetMacro = function (conf, props) {
           // skip degenerate paths
           if (offsetPath.ops.length > 1) {
             if (hide) offsetPath.hide()
+            if (divisionElementAdded) segments.push(false)
             segments.push(offsetPath)
+            divisionElementAdded = true
             prevPath = divisionElement
           }
         }
