@@ -266,3 +266,80 @@ export function safeIntersectsY(y, path) {
   }
   return intersectsY
 }
+
+export function drawHelpLine(
+  part,
+  id,
+  lineId,
+  start,
+  sideOffset,
+  dartCorrection = false,
+  design = 'toni'
+) {
+  const { points, paths, Path, Point, Snippet, snippets, utils, macro, expand, complete } =
+    part.shorthand()
+  if (!complete) return
+
+  function plotSidePoint(sideWaistOffset, reverse) {
+    if (reverse) {
+      return paths.sideHelper.reverse().shiftAlong(measureSideSeam(part) - sideWaistOffset)
+    }
+    return paths.sideHelper.shiftAlong(sideWaistOffset)
+  }
+
+  if (sideOffset > 0) {
+    points[id] = plotSidePoint(sideOffset, dartCorrection)
+    snippets[id] = new Snippet('notch', points[id])
+
+    const angle = paths.sideHelper.angleAt(points[id])
+    const tmpId = '__tmp' + id
+    const sideCpId = id + 'Cp1'
+    const centerCpId = id + 'Cp2'
+    points[tmpId] = points[id].shift(90 + angle, 30)
+    const dx = start.dx(points[id])
+    points[sideCpId] = points[id].shiftTowards(points[tmpId], dx * 0.3)
+    points[centerCpId] = start.translate(dx * 0.6, 0)
+
+    if (expand) {
+      macro('mirror', {
+        mirror: [points.cbNeck, points.cbHem],
+        clone: true,
+        points: [id],
+      })
+      const s = 'mirrored' + utils.capitalize(id)
+      snippets[s] = new Snippet('notch', points[s])
+    }
+
+    paths[lineId] = new Path()
+      .move(new Point(0, start.y))
+      .curve(points[centerCpId], points[sideCpId], points[id])
+
+    if (paths.dartMiddle && paths[lineId].intersects(paths.dartMiddle).length > 0) {
+      paths[lineId] = new Path().move(new Point(0, start.y)).line(points[centerCpId])
+    }
+
+    if (expand) {
+      macro('mirror', {
+        mirror: [points.cbNeck, points.cbHem],
+        clone: true,
+        reverse: true,
+        paths: [lineId],
+      })
+      const mirroredPath = paths['mirrored' + utils.capitalize(lineId)]
+      paths[lineId] = mirroredPath.combine(paths[lineId])
+      mirroredPath.hide()
+    }
+    paths[lineId].attr('class', 'contrast help')
+
+    macro('banner', {
+      id: lineId,
+      classes: 'center fill-contrast help',
+      path: paths[lineId],
+      text: design + ':' + lineId,
+    })
+  }
+}
+
+export function measureSideSeam(part) {
+  return createSideSeam(part).length()
+}

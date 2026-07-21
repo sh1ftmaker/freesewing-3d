@@ -13,6 +13,8 @@ import {
   verticalSplit,
   createSideSeam,
   addText,
+  measureSideSeam,
+  drawHelpLine,
 } from './utils.mjs'
 
 import about from '../about.json' with { type: 'json' }
@@ -46,6 +48,8 @@ export {
   armholeToArmholePitch,
   verticalSplit,
   createSideSeam,
+  measureSideSeam,
+  drawHelpLine,
   addText,
   Toni,
   i18n,

@@ -1,7 +1,13 @@
 import { base, constructSidePoints } from './base.mjs'
 import * as shared from './utils.mjs'
 import { pathUtilsPlugin } from '@freesewing/plugin-path-utils'
-import { createSideSeam, pathPathDistance, pointPathDistance, safeIntersectsY } from './utils.mjs'
+import {
+  createSideSeam,
+  drawHelpLine,
+  pathPathDistance,
+  pointPathDistance,
+  safeIntersectsY,
+} from './utils.mjs'
 import { buildOutlinePaths, buildSaPaths } from './utils.mjs'
 
 export const back = {
@@ -486,84 +492,23 @@ export const back = {
     store.set('sideChestOffset', -1)
 
     // Bust line
-    if (complete) {
-      if (points.bust) {
-        // Chest line
-
-        const chest = paths.sideSeam.intersectsY(points.bust.y)
-        points.chest = chest[0] ?? new Point(points.armhole.x, points.bust.y)
-
-        setOffset('sideChestOffset', points.chest.y)
-
-        if (store.get('sideChestOffset') >= 0) {
-          if (expand) {
-            macro('mirror', {
-              mirror: [points.cbNeck, points.cbHem, points.chest],
-              clone: true,
-              points: ['bust', 'chest'],
-            })
-            snippets.mirroredChest = new Snippet('notch', points.mirroredChest)
-          }
-
-          paths.chest = new Path()
-            .move(points.mirroredChest ?? points.cfBust)
-            .line(points.chest)
-            .attr('class', 'contrast help')
-          snippets.chest = new Snippet('notch', points.chest)
-          macro('banner', {
-            id: 'chestLine',
-            classes: 'center fill-contrast help',
-            path: paths.chest,
-            text: 'toni:chestLine',
-          })
-        }
-      }
+    if (points.bust) {
+      const chest = paths.sideSeam.intersectsY(points.bust.y)
+      points.chest = chest[0] ?? new Point(points.armhole.x, points.bust.y)
+      setOffset('sideChestOffset', points.chest.y)
     }
 
-    // Waist line
+    paths.sideHelper = paths.sideSeam.clone().hide()
+
+    drawHelpLine(part, 'sideChestNotch', 'chestLine', points.cbChest, store.get('sideChestOffset'))
     if (complete && points.cbHem.y > points.cbWaist.y) {
-      const sideWaistOffset = store.get('sideWaistOffset')
-      if (sideWaistOffset > 0) {
-        if (paths.sideSeam1) {
-          const l = paths.sideSeam1.length()
-          if (sideWaistOffset > l) {
-            points.sideWaistNotch = paths.sideSeam2.shiftAlong(sideWaistOffset - l)
-          } else {
-            points.sideWaistNotch = paths.sideSeam1.shiftAlong(sideWaistOffset)
-          }
-        } else {
-          points.sideWaistNotch = paths.sideSeam.shiftAlong(sideWaistOffset)
-        }
-        snippets.sideWaist = new Snippet('notch', points.sideWaistNotch)
-
-        points.waistCp = new Point(points.sideWaistNotch.x / 2, points.cbWaist.y)
-
-        paths.waist = new Path()
-          .move(points.cbWaist)
-          .line(points.sideWaistNotch)
-          .attr('class', 'stroke-xs help')
-
-        if (expand) {
-          macro('mirror', {
-            mirror: [points.cbNeck, points.cbHem],
-            clone: true,
-            points: ['sideWaistNotch', 'waist', 'armhole', 'hips'],
-          })
-          snippets.mirroredSideWaist = new Snippet('notch', points.mirroredSideWaistNotch)
-        }
-
-        // Waist line
-        paths.waist = new Path()
-          .move(points.mirroredWaist ?? points.cbWaist)
-          .line(points.waist)
-          .attr('class', 'contrast help')
-        macro('banner', {
-          id: 'waistLine',
-          classes: 'center fill-contrast help',
-          path: paths.waist,
-          text: 'toni:waistLine',
-        })
-      }
+      drawHelpLine(
+        part,
+        'sideWaistNotch',
+        'waistLine',
+        points.cbWaist,
+        store.get('sideWaistOffset')
+      )
       macro('vd', {
         id: 'hHemToWaist',
         from: points.cbHem,

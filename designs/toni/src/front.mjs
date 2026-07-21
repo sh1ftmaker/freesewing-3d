@@ -9,6 +9,8 @@ import {
   pathPathDistance,
   pointPathDistance,
   verticalSplit,
+  measureSideSeam,
+  drawHelpLine,
 } from './utils.mjs'
 import { pathUtilsPlugin } from '@freesewing/plugin-path-utils'
 import { pctBasedOn } from '@freesewing/core'
@@ -76,10 +78,6 @@ export const front = {
     let deeper = measurements.chest * options.frontArmholeDeeper
     for (const p of ['', 'Cp1', 'Cp2']) {
       points[`armholePitch${p}`] = points[`armholePitch${p}`].shift(180, deeper)
-    }
-
-    function measureSideSeam() {
-      return createSideSeam(part).length()
     }
 
     let originalSideSeamLength = store.get('backSideSeamLength')
@@ -184,7 +182,7 @@ export const front = {
       )
     }
 
-    const dartLength = measureSideSeam() - originalSideSeamLength
+    const dartLength = measureSideSeam(part) - originalSideSeamLength
     const constructDart = (path, tip, dartLength) => {
       const length = path.length()
       dartLength = Math.max(0, Math.min(dartLength, length))
@@ -656,75 +654,13 @@ export const front = {
       })
     }
 
-    const newSideSeamLength = measureSideSeam()
-
-    function plotSidePoint(sideWaistOffset, reverse) {
-      if (reverse) {
-        return paths.sideHelper.reverse().shiftAlong(newSideSeamLength - sideWaistOffset)
-      }
-      return paths.sideHelper.shiftAlong(sideWaistOffset)
-    }
-
     if (paths.sideSeam1) {
       paths.sideHelper = paths.sideSeam1.clone().combine(paths.sideSeam2).hide()
     } else {
       paths.sideHelper = paths.sideSeam.clone().hide()
     }
 
-    function drawHelpLine(offset, id, lineId, start, reverse = false) {
-      if (!complete) return
-
-      const sideOffset = store.get(offset)
-      if (sideOffset > 0) {
-        points[id] = plotSidePoint(sideOffset, reverse)
-        snippets[id] = new Snippet('notch', points[id])
-
-        const angle = paths.sideHelper.angleAt(points[id])
-        const tmpId = '__tmp' + id
-        const sideCpId = id + 'Cp1'
-        const centerCpId = id + 'Cp2'
-        points[tmpId] = points[id].shift(90 + angle, 30)
-        const dx = start.dx(points[id])
-        points[sideCpId] = points[id].shiftTowards(points[tmpId], dx * 0.3)
-        points[centerCpId] = start.translate(dx * 0.6, 0)
-
-        if (expand) {
-          macro('mirror', {
-            mirror: [points.cfNeck, points.cfHem],
-            clone: true,
-            points: [id],
-          })
-          const s = 'mirrored' + utils.capitalize(id)
-          snippets[s] = new Snippet('notch', points[s])
-        }
-
-        paths[lineId] = new Path()
-          .move(new Point(0, start.y))
-          .curve(points[centerCpId], points[sideCpId], points[id])
-
-        if (expand) {
-          macro('mirror', {
-            mirror: [points.cfNeck, points.cfHem],
-            clone: true,
-            reverse: true,
-            paths: [lineId],
-          })
-          const mirroredPath = paths['mirrored' + utils.capitalize(lineId)]
-          paths[lineId] = mirroredPath.join(paths[lineId])
-          mirroredPath.hide()
-        }
-        paths[lineId].attr('class', 'contrast help')
-
-        macro('banner', {
-          id: lineId,
-          classes: 'start fill-contrast help',
-          path: paths[lineId],
-          text: 'toni:' + lineId,
-        })
-      }
-    }
-
-    drawHelpLine('sideChestOffset', 'sideChestNotch', 'chestLine', points.cbChest, true)
+    drawHelpLine(part, 'sideChestNotch', 'chestLine', points.cbChest, store.get('sideChestOffset'))
 
     if (expand) {
       macro('mirror', {
@@ -736,7 +672,13 @@ export const front = {
     }
 
     if (complete && points.cfHem.y > points.cfWaist.y) {
-      drawHelpLine('sideWaistOffset', 'sideWaistNotch', 'waistLine', points.cbWaistAdjust)
+      drawHelpLine(
+        part,
+        'sideWaistNotch',
+        'waistLine',
+        points.cfWaist,
+        store.get('sideWaistOffset')
+      )
 
       macro('vd', {
         id: 'hHemToWaist',

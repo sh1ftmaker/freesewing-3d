@@ -253,7 +253,6 @@ export const base = {
         msg: 'toni:lowArmpit',
       })
     }
-    console.log(points.cbArmpit.y, points.shoulder.y + measurements.biceps / 2.5)
     if (points.cbArmpit.y < points.shoulder.y + measurements.biceps / 2.5) {
       store.flag.error({
         msg: 'toni:highArmpit',
