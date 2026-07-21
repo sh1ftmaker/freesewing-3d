@@ -86,6 +86,15 @@ function draftFront({ points, paths, Snippet, snippets, sa, macro, store, part, 
     y: points.strapFrontLeft.y - 15,
   })
 
+  paths.frontSideJoin.unhide()
+  macro('banner', {
+    id: 'frontSide',
+    classes: 'center contrast help',
+    path: paths.frontSideJoin,
+    text: 'sabrina:frontside',
+  })
+  paths.frontSideJoin.hide()
+
   return part
 }
 

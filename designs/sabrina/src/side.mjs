@@ -54,6 +54,23 @@ function draftSide({ Point, points, paths, Snippet, snippets, sa, macro, store, 
     d: sa + 15,
   })
 
+  paths.sideFrontJoin.unhide()
+  macro('banner', {
+    id: 'frontSide',
+    classes: 'center contrast help',
+    path: paths.sideFrontJoin,
+    text: 'sabrina:frontside',
+  })
+  paths.sideFrontJoin.hide()
+  paths.sideBackJoin.unhide()
+  macro('banner', {
+    id: 'backSide',
+    classes: 'center contrast help',
+    path: paths.sideBackJoin,
+    text: 'sabrina:backside',
+  })
+  paths.sideBackJoin.hide()
+
   return part
 }
 

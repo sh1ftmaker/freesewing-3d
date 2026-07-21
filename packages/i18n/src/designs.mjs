@@ -7645,7 +7645,9 @@ export const designs = {
       "cutWaistband.t": "The waistband is not shown",
       "cutWaistband.d": "The **waistband** is a rectangular piece of main fabric {{{ w }}} wide and {{{ l }}} long.",
       "badArmpitPosition.t": "Error determining armpit position",
-      "badArmpitPosition.d": "We could not construct the armhole. This draft might fail or result in a bad fit. Please verify your measurements, especially hps-to-waist-front and waist-to-armpit."
+      "badArmpitPosition.d": "We could not construct the armhole. This draft might fail or result in a bad fit. Please verify your measurements, especially hps-to-waist-front and waist-to-armpit.",
+      "frontSide": "Front side",
+      "backSide": "Back side"
     },
     "o": {
       "length": {

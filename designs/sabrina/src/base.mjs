@@ -37,7 +37,7 @@ function draftBase({ options, measurements, Point, Path, points, paths, utils, s
 
   points.cbBand = points.cfBand.translate(chestCirc * 0.5, 0)
 
-  points.sfBand = points.cfBand.translate(chestFront * options.splitOffsetFront, 0)
+  points.sfBand = points.cfBand.translate(ribcageFront * options.splitOffsetFront, 0)
   points.sfChest = points.cfBust.translate(chestFront / 2, 0)
   points.sfDart = points.sfBand
     .translate(0, -bustToBand)
@@ -116,15 +116,14 @@ function draftBase({ options, measurements, Point, Path, points, paths, utils, s
     measurements.chest * options.strapCurveBack
   )
 
-  if (options.useLegacyArmholePosition) {
-    points.sfArmpit = points.armpit.shift(180, armpitWidth)
-  } else {
-    points.sfArmpit = new Point(
-      measurements.shoulderToShoulder *
-        0.5 *
-        (1 - options.frontArmholeOpening) *
-        horizontalBustScale,
-      points.armpit.y
+  points.sfArmpit = points.armpit.shift(180, armpitWidth)
+  if (!options.useLegacyArmholePosition) {
+    points.sfArmpit = points.sfArmpit.shiftFractionTowards(
+      new Point(
+        ribcageFront * 0.5 * (1 - options.frontArmholeOpening) * horizontalBustScale,
+        points.armpit.y
+      ),
+      1 - options.frontArmholeOpening
     )
   }
   points.armpitBottom = points.armpit.shift(270, armpitWidth)
@@ -419,9 +418,9 @@ export const base = {
     splitOffsetBack: { pct: 28, min: 15, max: 40, menu: 'advanced' },
     useLegacyArmholePosition: { bool: false, menu: 'advanced' },
     frontArmholeOpening: {
-      pct: 5,
+      pct: 15,
       min: 0,
-      max: 15,
+      max: 30,
       menu: (settings, mergedOptions) => (mergedOptions?.useLegacyArmholePosition ? false : 'fit'),
     },
   },

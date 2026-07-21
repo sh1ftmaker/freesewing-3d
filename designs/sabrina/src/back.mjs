@@ -85,6 +85,15 @@ function draftBack({ points, paths, Snippet, snippets, sa, macro, store, part, o
     y: points.strapBackLeft.y - 15,
   })
 
+  paths.backSideJoin.unhide()
+  macro('banner', {
+    id: 'backSide',
+    classes: 'center contrast help',
+    path: paths.backSideJoin,
+    text: 'sabrina:backside',
+  })
+  paths.backSideJoin.hide()
+
   return part
 }
 
