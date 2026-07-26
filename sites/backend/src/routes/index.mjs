@@ -20,8 +20,7 @@ export const routes = {
   confirmationsRoutes,
   curatedSetsRoutes,
   subscribersRoutes,
-  // FIXME: We need to migrate this to the new image hosting
-  //flowsRoutes,
+  flowsRoutes,
   adminRoutes,
   infoRoutes,
   oidcRoutes,

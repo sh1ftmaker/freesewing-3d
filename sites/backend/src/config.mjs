@@ -57,6 +57,7 @@ const baseConfig = {
   // Feature flags
   use: {
     codeberg: envToBool(process.env.BACKEND_ENABLE_CODEBERG),
+    jitsi: envToBool(process.env.BACKEND_ENABLE_JITSI),
     oidc: {
       provider: envToBool(process.env.BACKEND_ENABLE_OIDC_PROVIDER),
       clients: {
@@ -150,6 +151,16 @@ if (baseConfig.use.codeberg)
       name: process.env.BACKEND_CODEBERG_USER_NAME || 'Freesewing bot',
       email: process.env.BACKEND_CODEBERG_USER_EMAIL || 'skully@freesewing.eu',
     },
+  }
+
+// Jitsi config
+if (baseConfig.use.jitsi)
+  baseConfig.jitsi = {
+    appId: process.env.BACKEND_JITSI_APP_ID,
+    secret: process.env.BACKEND_JITSI_SECRET,
+    moderators: [
+      '10355124-65c8-4fcf-9290-43b921365583', // joost
+    ],
   }
 
 // OIDC Provider config
@@ -294,6 +305,7 @@ const vars = {
   // Feature flags
   BACKEND_ENABLE_CODEBERG: 'optional',
   BACKEND_ENABLE_OPEN_API: 'optional',
+  BACKEND_ENABLE_JITSI: 'optional',
   // Email
   BACKEND_SCALEWAY_PROJECT_ID: 'required',
   BACKEND_SCALEWAY_EMAIL_TOKEN: 'requiredSecret',
@@ -305,6 +317,11 @@ if (envToBool(process.env.BACKEND_ENABLE_CODEBERG)) {
   vars.BACKEND_CODEBERG_USER = 'optional'
   vars.BACKEND_CODEBERG_USER_NAME = 'optional'
   vars.BACKEND_CODEBERG_USER_EMAIL = 'optional'
+}
+// Vars for Jitsi integration
+if (envToBool(process.env.BACKEND_ENABLE_JITSI)) {
+  vars.BACKEND_JITSI_APP_ID = 'required'
+  vars.BACKEND_JITSI_SECRET = 'requiredSecret'
 }
 
 // Vars for OIDC Provider

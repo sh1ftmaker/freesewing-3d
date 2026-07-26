@@ -2,11 +2,13 @@ import { FlowsController } from '../controllers/flows.mjs'
 
 const Flow = new FlowsController()
 const jwt = ['jwt', { session: false }]
-const bsc = ['basic', { session: false }]
+//const bsc = ['basic', { session: false }]
 
 export function flowsRoutes(tools) {
   const { app, passport } = tools
 
+  /*
+   * FIXME: We need to migrate these routes to the new image hosting
   // Upload an image
   app.post('/images/jwt', passport.authenticate(...jwt), (req, res) =>
     Flow.uploadImage(req, res, tools)
@@ -47,4 +49,13 @@ export function flowsRoutes(tools) {
       Flow.isSlugAvailable(req, res, tools, type)
     )
   }
+  */
+
+  // Mint a jitsi token as an authenticated user
+  app.get(`/token/jitsi/jwt`, passport.authenticate(...jwt), (req, res) =>
+    Flow.mintJitsiToken(req, res, tools, false)
+  )
+
+  // Mint a jitsi token as guest
+  app.get(`/token/jitsi/guest`, (req, res) => Flow.mintJitsiToken(req, res, tools, true))
 }
