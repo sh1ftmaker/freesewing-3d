@@ -9,9 +9,9 @@ export const pocketFacing = {
     if (options.pocket !== 'inset' || !options.splitParts || !expand) {
       return part.hide()
     }
-    paths.pocketSeam = new Path()
-      .move(points.styleWaistOut)
-      .line(points.pocketTopLeft)
+    paths.pocketSeam = paths.waistBand
+      .split(points.styleWaistOut)[1]
+      .split(points.pocketTopLeft)[0]
       .line(points.pocketBottomLeft)
       .line(points.pocketBottomRight)
       .close()

@@ -126,6 +126,14 @@
     "waistbandExtraWidth": {
       "t": "Waistband extra width",
       "d": "Make the waistband tunnel a bit wider than the elastic for easier sewing"
+    },
+    "stretch": {
+      "t": "Fit waist (stretch)",
+      "d": "Whether the waist opening will follow the seat circumference or fit to your body"
+    },
+    "backCoverage": {
+      "t": "Back coverage",
+      "d": "Adjust the side angle of the waistband to increase or reduce how much of your bum is covered"
     }
   }
 }

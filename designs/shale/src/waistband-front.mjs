@@ -5,37 +5,23 @@ export const waistbandFront = {
   name: 'shale.waistband-front',
   after: front,
   measurements: [],
-  optionalMeasurements: ['hips', 'waist'],
+  optionalMeasurements: [],
   options: {
     waistbandFrontAngle: {
       deg: 25,
       min: 1,
       max: 60,
-      menu: 'style',
+      menu: 'fit',
     },
   },
   plugins: [ringsectorPlugin],
-  draft: ({
-    Point,
-    points,
-    Path,
-    paths,
-    macro,
-    expand,
-    measurements,
-    absoluteOptions,
-    options,
-    sa,
-    units,
-    part,
-    store,
-  }) => {
+  draft: ({ points, Path, paths, macro, measurements, options, sa, part, store }) => {
     if (!options.elasticOnlyOnBack) {
       return part.hide()
     }
 
-    let height = store.get('waistband_width')
-    let length = store.get('waistband_front') * 2
+    let height = store.get('waistbandWidth')
+    let length = store.get('waistbandFront') * 2
 
     const angle = Math.min(90, Math.max(1, options.waistbandFrontAngle))
 
@@ -49,30 +35,27 @@ export const waistbandFront = {
       rotate: false,
     })
 
-    if (measurements.waist && measurements.hips) {
-      // Approximate circumference of the complete waistband when worn
-      let waistTarget =
-        measurements.waist * options.waistHeight + measurements.hips * (1 - options.waistHeight)
-      let slope = (measurements.hips - measurements.waist) / measurements.waistToHips
-      // Approximate portion of the waistband circumference covered by the waistFront part when worn
-      const frontPart = length / waistTarget
-      let idealAngle = Math.max(1, (frontPart * slope * 180) / Math.PI)
-      if (Math.abs(idealAngle - angle) >= 1) {
-        store.flag.info({
-          msg: `shale:waistbandAngle`,
-          notes: ['shale:waistbandAngleNotes'],
-          replace: {
-            angle: '' + Math.round(idealAngle),
+    let waistTarget = store.get('waistTarget')
+
+    let slope = (measurements.hips - measurements.waist) / measurements.waistToHips
+    // Approximate portion of the waistband circumference covered by the waistFront part when worn
+    const frontPart = length / waistTarget
+    let idealAngle = Math.max(1, (frontPart * slope * 180) / Math.PI)
+    if (Math.abs(idealAngle - angle) >= 1) {
+      store.flag.info({
+        msg: `shale:waistbandAngle`,
+        notes: ['shale:waistbandAngleNotes'],
+        replace: {
+          angle: '' + Math.round(idealAngle),
+        },
+        suggest: {
+          text: 'shale:setWaistAngle',
+          icon: 'fixme',
+          update: {
+            settings: ['options.waistbandFrontAngle', Math.round(idealAngle)],
           },
-          suggest: {
-            text: 'shale:setWaistAngle',
-            icon: 'fixme',
-            update: {
-              settings: ['options.waistbandFrontAngle', Math.round(idealAngle)],
-            },
-          },
-        })
-      }
+        },
+      })
     }
 
     paths.__macro_ringsector_waistbandFront_path.setClass('fabric')

@@ -11,12 +11,10 @@ import Armholedartcurved from '@site/docs/docs/designs/noble/options/armholedart
 import Armholedartposition from '@site/docs/docs/designs/noble/options/armholedartposition/readme.mdx'
 import Armholedartpositionbackoffset from '@site/docs/docs/designs/sasha/options/armholedartpositionbackoffset/readme.mdx'
 import Armholedepth from '@site/docs/docs/designs/noble/options/armholedepth/readme.mdx'
-import Armholedepthfactor from '@site/docs/docs/designs/sasha/options/armholedepthfactor/readme.mdx'
 import Backarmholecurvature from '@site/docs/docs/designs/noble/options/backarmholecurvature/readme.mdx'
 import Backarmholepitchdepth from '@site/docs/docs/designs/noble/options/backarmholepitchdepth/readme.mdx'
 import Backarmholeslant from '@site/docs/docs/designs/noble/options/backarmholeslant/readme.mdx'
 import Backdartheight from '@site/docs/docs/designs/noble/options/backdartheight/readme.mdx'
-import Backhemslope from '@site/docs/docs/designs/noble/options/backhemslope/readme.mdx'
 import Backneckcutout from '@site/docs/docs/designs/noble/options/backneckcutout/readme.mdx'
 import Bicepsease from '@site/docs/docs/designs/sasha/options/bicepsease/readme.mdx'
 import Bustspanease from '@site/docs/docs/designs/noble/options/bustspanease/readme.mdx'
@@ -122,16 +120,6 @@ import Withpocket from '@site/docs/docs/designs/sasha/options/withpocket/readme.
 - Maximum: **90%**
 
 <Shoulderdartposition />
-
-### Armhole depth factor (legacy) {#armholedepthfactor}
-
-**Controls the depth of the armhole. Higher values make a deeper armhole. This option only applies to the legacy (v2) way of calculating the armhole depth.**
-- Type: **Percentage**
-- Default: **55%**
-- Minimum: **50%**
-- Maximum: **70%**
-
-<Armholedepthfactor />
 
 ### Pocket opening curve {#pocketcurve}
 
@@ -250,8 +238,8 @@ import Withpocket from '@site/docs/docs/designs/sasha/options/withpocket/readme.
 **Controls the position of the waist 'dart', moving it to the center (negative) or side (positive)**
 - Type: **Percentage**
 - Default: **0%**
-- Minimum: **-100%**
-- Maximum: **100%**
+- Minimum: **-50%**
+- Maximum: **50%**
 
 <Waistdartposition />
 
@@ -315,6 +303,16 @@ import Withpocket from '@site/docs/docs/designs/sasha/options/withpocket/readme.
 - Maximum: **5%**
 
 <Shouldertoshoulderease />
+
+### Sleevecap ease {#sleevecapease}
+
+**The amount by which the sleevecap seam is longer than the armhole seam.**
+- Type: **Percentage**
+- Default: **0%**
+- Minimum: **0%**
+- Maximum: **10%**
+
+<Sleevecapease />
 
 ### Waist ease {#waistease}
 
@@ -406,16 +404,6 @@ import Withpocket from '@site/docs/docs/designs/sasha/options/withpocket/readme.
 
 <Armholedartpositionbackoffset />
 
-### Back hem slope {#backhemslope}
-
-**Constrols the slope of the back hem**
-- Type: **Degrees**
-- Default: **2.5°**
-- Minimum: **0°**
-- Maximum: **5°**
-
-<Backhemslope />
-
 ### Back neck cutout {#backneckcutout}
 
 **How deep the neck is cut out at the back**
@@ -445,3 +433,194 @@ import Withpocket from '@site/docs/docs/designs/sasha/options/withpocket/readme.
 - Maximum: **92%**
 
 <Highbustwidth />
+
+### Sleeve width guarantee {#sleevewidthguarantee}
+
+**Controls how much of the sleeve width will be guaranteed. This determines how much we can alter the sleeve width to fit the sleeve in the armhole.**
+- Type: **Percentage**
+- Default: **90%**
+- Minimum: **25%**
+- Maximum: **100%**
+
+<Sleevewidthguarantee />
+
+### Sleevecap {#sleevecap}
+#### Sleevecap back X {#sleevecapbackfactorx}
+
+**Controls the placement of the sleevecap back pitchpoint on the X-axis (horizontal)**
+- Type: **Percentage**
+- Default: **60%**
+- Minimum: **35%**
+- Maximum: **65%**
+
+<Sleevecapbackfactorx />
+
+#### Sleevecap back Y {#sleevecapbackfactory}
+
+**Controls the placement of the sleevecap back pitchpoint on the Y-axis (vertical)**
+- Type: **Percentage**
+- Default: **33%**
+- Minimum: **30%**
+- Maximum: **65%**
+
+<Sleevecapbackfactory />
+
+#### Sleevecap front X {#sleevecapfrontfactorx}
+
+**Controls the placement of the sleevecap front pitchpoint on the X-axis (horizontal)**
+- Type: **Percentage**
+- Default: **55%**
+- Minimum: **35%**
+- Maximum: **65%**
+
+<Sleevecapfrontfactorx />
+
+#### Sleevecap front Y {#sleevecapfrontfactory}
+
+**Controls the placement of the sleevecap front pitchpoint on the Y-axis (vertical)**
+- Type: **Percentage**
+- Default: **33%**
+- Minimum: **30%**
+- Maximum: **65%**
+
+<Sleevecapfrontfactory />
+
+#### Sleevecap Q1 offset {#sleevecapq1offset}
+
+**Controls the curvature of the sleevecap in the first quadrant (front armhole)**
+- Type: **Percentage**
+- Default: **1.7%**
+- Minimum: **0%**
+- Maximum: **7%**
+
+<Sleevecapq1offset />
+
+#### Sleevecap Q1 downward spread {#sleevecapq1spread1}
+
+**Controls the spread of the sleevecap first quadrant curvature towards the armhole**
+- Type: **Percentage**
+- Default: **10%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq1spread1 />
+
+#### Sleevecap Q1 upward spread {#sleevecapq1spread2}
+
+**Controls the spread of the sleevecap first quadrant curvature towards the shoulder**
+- Type: **Percentage**
+- Default: **15%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq1spread2 />
+
+#### Sleevecap Q2 offset {#sleevecapq2offset}
+
+**Controls the curvature of the sleevecap in the second quadrant (front shoulder)**
+- Type: **Percentage**
+- Default: **3.5%**
+- Minimum: **0%**
+- Maximum: **7%**
+
+<Sleevecapq2offset />
+
+#### Sleevecap Q2 downward spread {#sleevecapq2spread1}
+
+**Controls the spread of the sleevecap second quadrant curvature towards the armhole**
+- Type: **Percentage**
+- Default: **15%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq2spread1 />
+
+#### Sleevecap Q2 upward spread {#sleevecapq2spread2}
+
+**Controls the spread of the sleevecap second quadrant curvature towards the shoulder**
+- Type: **Percentage**
+- Default: **10%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq2spread2 />
+
+#### Sleevecap Q3 offset {#sleevecapq3offset}
+
+**Controls the curvature of the sleevecap in the third quadrant (back shoulder)**
+- Type: **Percentage**
+- Default: **2.5%**
+- Minimum: **0%**
+- Maximum: **7%**
+
+<Sleevecapq3offset />
+
+#### Sleevecap Q3 upward spread {#sleevecapq3spread1}
+
+**Controls the spread of the sleevecap third quadrant curvature towards the shoulder**
+- Type: **Percentage**
+- Default: **10%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq3spread1 />
+
+#### Sleevecap Q3 downward spread {#sleevecapq3spread2}
+
+**Controls the spread of the sleevecap third quadrant curvature towards the armhole**
+- Type: **Percentage**
+- Default: **8%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq3spread2 />
+
+#### Sleevecap Q4 offset {#sleevecapq4offset}
+
+**Controls the curvature of the sleevecap in the fourth quadrant (back armhole)**
+- Type: **Percentage**
+- Default: **1%**
+- Minimum: **0%**
+- Maximum: **7%**
+
+<Sleevecapq4offset />
+
+#### Sleevecap Q4 upward spread {#sleevecapq4spread1}
+
+**Controls the spread of the sleevecap fourth quadrant curvature towards the shoulder**
+- Type: **Percentage**
+- Default: **7%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq4spread1 />
+
+#### Sleevecap Q4 downward spread {#sleevecapq4spread2}
+
+**Controls the spread of the sleevecap fourth quadrant curvature towards the armhole**
+- Type: **Percentage**
+- Default: **6.3%**
+- Minimum: **4%**
+- Maximum: **20%**
+
+<Sleevecapq4spread2 />
+
+#### Sleevecap top X {#sleevecaptopfactorx}
+
+**Controls the horizontal location of the sleevecap top.**
+- Type: **Percentage**
+- Default: **50%**
+- Minimum: **25%**
+- Maximum: **75%**
+
+<Sleevecaptopfactorx />
+
+#### Sleevecap top Y {#sleevecaptopfactory}
+
+**Controls the height of the sleevecap. A higher value results in a higher and more narrow sleevecap.**
+- Type: **Percentage**
+- Default: **45%**
+- Minimum: **35%**
+- Maximum: **125%**
+
+<Sleevecaptopfactory />

@@ -4,18 +4,16 @@ import { pathUtilsPlugin } from '@freesewing/plugin-path-utils'
 
 export function drawShortsPart(
   id,
+  waist,
   seat,
   leg,
   crossSeam,
   rotOffset,
+  upperLegTarget,
   { Point, points, Path, paths, measurements, options, utils, store }
 ) {
-  let waist = seat * (1 + options.ease * (1 - options.waistReduction))
   seat = seat * (1 + options.ease)
 
-  if (Math.abs(leg) - Math.abs(seat) < Math.abs(measurements.seat * 0.025)) {
-    leg = seat + measurements.seat * 0.025 * Math.sign(leg)
-  }
   points.waistOut = new Point(0, 0)
   points['waist' + id] = new Point(waist, 0)
   points.hipsOut = new Point(0, measurements.waistToHips)
@@ -31,11 +29,11 @@ export function drawShortsPart(
   points.legOut = new Point(0, points.crotchOut.y + measurements.waistToUpperLeg * options.inseam)
   points['leg' + id] = new Point(leg, points.legOut.y)
   points['legCenter' + id] = new Point(seat, points.legOut.y)
-  points['legInner' + id] = new Point(seat * 0.2, points.legOut.y)
-  points['legInner' + id + 'Cp1'] = new Point(seat * 0.7, points.legOut.y)
+  points['legInner' + id] = new Point(leg * 0.2, points.legOut.y)
+  points['legInner' + id + 'Cp1'] = new Point(leg * 0.5, points.legOut.y)
   points['fork' + id] = new Point(points['leg' + id].x, points.crotchOut.y)
-  points['crotchCp1' + id] = points['seat' + id].shiftFractionTowards(points['crotchCp2' + id], 0.5)
-  points['crotchCp2' + id] = points['fork' + id].shiftFractionTowards(points['crotchCp2' + id], 1)
+  points['crotchCp1' + id] = points['seat' + id].shiftFractionTowards(points['crotchCp2' + id], 1)
+  points['crotchCp2' + id] = points['fork' + id].shiftFractionTowards(points['crotchCp2' + id], 0.5)
 
   points['splitOut'] = points.seatOut.shiftFractionTowards(
     points.crotchOut,
@@ -59,30 +57,52 @@ export function drawShortsPart(
 
   for (let i = 0; i < 10; i++) {
     let delta = paths.crossSeam.length() - crossSeamTarget
-    let legDelta = paths.leg.length() - Math.abs(leg)
+    let hemDelta = paths.leg.length() - Math.abs(leg)
+    let upperLegDelta = Math.abs(points['fork' + id].x) - upperLegTarget
 
-    if (delta > -0.1 && legDelta > -0.1) {
+    if (delta > -0.1 && hemDelta > -0.1) {
       break
     }
 
     let deltaShift = (1 - options.fitLegs) * delta
     let deltaRot = options.fitLegs * delta
 
-    if (legDelta < 0) {
-      deltaShift += legDelta
-      deltaRot -= legDelta
+    if (hemDelta < 0) {
+      deltaShift += hemDelta
+      deltaRot -= hemDelta
+    }
+    if (upperLegDelta < 0) {
+      deltaShift += upperLegDelta
+      // deltaRot += upperLegDelta
     }
 
     points['fork' + id] = points['fork' + id].translate(deltaShift * -Math.sign(leg), 0)
     points['leg' + id] = points['leg' + id].translate(deltaShift * -Math.sign(leg), 0)
-    // points['crotchCp2' + id] = points['crotchCp2' + id].translate(deltaShift * -Math.sign(leg), 0)
 
     points['crotchCenter' + id] = new Point(0, points.crotchOut.y + Math.abs(seat) * rotOffset)
     let rot = (deltaRot / leg) * 20
     points['fork' + id] = points['fork' + id].rotate(rot, points['crotchCenter' + id])
     points['leg' + id] = points['leg' + id].rotate(rot, points['crotchCenter' + id])
-    points['crotchCp2' + id] = points['crotchCp2' + id].rotate(rot, points['crotchCenter' + id])
     points['legCenter' + id] = points['legCenter' + id].rotate(rot, points['crotchCenter' + id])
+
+    let tmpPoint = points['fork' + id].shift(points['leg' + id].angle(points['legCenter' + id]), 10)
+    points['crotchCp2' + id] = utils.beamsIntersect(
+      points['waist' + id],
+      points['seat' + id],
+      points['fork' + id],
+      tmpPoint
+    )
+    points['crotchCp2' + id] = points['fork' + id].shiftFractionTowards(
+      points['crotchCp2' + id],
+      0.5
+    )
+
+    points['crotchCp1' + id] = utils.beamsIntersect(
+      points['seat' + id],
+      points['crotchCp1' + id],
+      points['crotchCp2' + id],
+      points['fork' + id]
+    )
 
     paths.crossSeam = new Path()
       .move(points['waist' + id])
@@ -230,6 +250,11 @@ export const front = {
   name: 'shale.front',
   measurements: [
     'seat',
+    'seatBack',
+    'knee',
+    'hips',
+    'waist',
+    'waistToKnee',
     'waistToSeat',
     'waistToHips',
     'crotchDepth',
@@ -279,6 +304,12 @@ export const front = {
       max: 100,
       menu: 'fit',
     },
+    backCoverage: {
+      deg: 0,
+      min: -5,
+      max: 10,
+      menu: 'fit',
+    },
     crossSeamEase: {
       pct: 2.5,
       min: 0,
@@ -292,7 +323,7 @@ export const front = {
       menu: 'style',
     },
     fitLegs: {
-      pct: 50,
+      pct: 90,
       min: 0,
       max: 100,
       menu: 'fit',
@@ -318,6 +349,12 @@ export const front = {
       max: 100,
       menu: 'advanced',
     },
+    stretch: {
+      pct: 0,
+      min: 0,
+      max: 115,
+      menu: 'fit',
+    },
   },
   plugins: [pathUtilsPlugin],
   draft: ({
@@ -339,7 +376,6 @@ export const front = {
     complete,
   }) => {
     let frontSeat = (measurements.seat / 2) * options.legBalance
-    let frontLeg = measurements.upperLeg * options.legBalance
     let waistToCrotchEstimates = [measurements.crotchDepth, measurements.waistToUpperLeg]
     if (measurements.inseam && measurements.waistToFloor) {
       waistToCrotchEstimates.push(measurements.waistToFloor - measurements.inseam)
@@ -348,6 +384,11 @@ export const front = {
     const estimateMin = Math.min(...waistToCrotchEstimates)
     const estimateMax = Math.max(...waistToCrotchEstimates)
     let crotchDepthUncertainty = estimateMax - estimateMin
+    let upperLegToKnee = measurements.waistToKnee - measurements.waistToUpperLeg
+    let inseam = measurements.waistToUpperLeg * options.inseam
+    let alongLeg = inseam / upperLegToKnee
+    let hemCircumference = measurements.upperLeg * (1 - alongLeg) + measurements.knee * alongLeg
+    let frontLeg = hemCircumference * options.legBalance
 
     log.info('Estimates for crotch depth: ' + waistToCrotchEstimates.map(units).join(', '))
     log.info('Chosen crotch depth: ' + units(crotchDepth))
@@ -374,28 +415,41 @@ export const front = {
       })
       crotchDepth = measurements.waistToSeat
     }
+
+    // Approximate circumference of the complete waistband when worn
+    let waistTarget =
+      measurements.waist * options.waistHeight + measurements.hips * (1 - options.waistHeight)
+    if (measurements.waist > measurements.hips) {
+      waistTarget = measurements.hips
+    }
+
     store.set('crotchDepth', crotchDepth)
     store.set('frontLeg', frontLeg)
     store.set('frontSeat', frontSeat)
-    store.set('waistband_width', absoluteOptions.elasticHeight * (1 + options.waistbandExtraWidth))
+    store.set('waistbandWidth', absoluteOptions.elasticHeight * (1 + options.waistbandExtraWidth))
+    store.set('waistTarget', waistTarget)
 
-    drawShortsPart('Front', -frontSeat, -frontLeg, measurements.crossSeamFront, 0, part.shorthand())
+    const frontWaistNonStretch = frontSeat * (1 + options.ease * (1 - options.waistReduction))
+    const frontWaistStretch = (measurements.waist / 2) * options.legBalance
+    const frontWaist =
+      frontWaistNonStretch * (1 - options.stretch) + frontWaistStretch * options.stretch
 
-    points.waistCurveZero = points.hipsOut
-    points.waistCurveMax = points.waistOut.translate(100, 0)
-    paths.waistCurveFront = new Path().move(points.waistCurveZero).line(points.waistCurveMax)
-    paths.waistCurveBack = new Path()
-      .move(points.waistCurveZero)
-      ._curve(
-        points.waistOut.shiftFractionTowards(points.waistCurveZero, 0.5),
-        points.waistCurveMax
-      )
+    drawShortsPart(
+      'Front',
+      -frontWaist,
+      -frontSeat,
+      -frontLeg,
+      measurements.crossSeamFront,
+      0.5,
+      measurements.upperLeg * options.legBalance,
+      part.shorthand()
+    )
 
-    let frontY = paths.waistCurveFront.intersectsX(options.waistHeight * 100)[0]?.y ?? 0
-    let backY = paths.waistCurveBack.intersectsX(options.waistHeight * 100)[0]?.y ?? 0
+    let frontY = points.hipsOut.shiftFractionTowards(points.waistOut, options.waistHeight).y
+    let backY = frontY
 
-    frontY += store.get('waistband_width')
-    backY += store.get('waistband_width')
+    frontY += store.get('waistbandWidth')
+    backY += store.get('waistbandWidth')
 
     delete points.waistCurveZero
     delete points.waistCurveMax
@@ -415,22 +469,61 @@ export const front = {
         msg: `shale:badWaistbandHeight`,
       })
     }
+    const backSeat = measurements.seat / 2 - store.get('frontSeat')
+    const backWaistNonStretch = backSeat * (1 + options.ease * (1 - options.waistReduction))
+    const backWaistStretch = (measurements.waist / 2) * (1 - options.legBalance)
+    const backWaist =
+      backWaistNonStretch * (1 - options.stretch) + backWaistStretch * options.stretch
 
     drawShortsPart(
       'Back',
-      measurements.seat / 2 - store.get('frontSeat'),
-      measurements.upperLeg - store.get('frontLeg'),
+      backWaist,
+      backSeat,
+      hemCircumference - store.get('frontLeg'),
       // we've effectively increased the cross-seam already by raising the waist on the back,
       // so reduce the cross-seam-back measurement accordingly to compensate for that
       measurements.crossSeamBack + (backY - frontY),
       0.5,
+      measurements.upperLeg * (1 - options.legBalance),
       part.shorthand()
     )
 
     points.styleWaistFront = utils.beamIntersectsY(points.waistFront, points.seatFront, frontY)
-    points.styleWaistOut = new Point(0, points.styleWaistFront.y)
-    points.styleWaistBack = utils.beamIntersectsY(points.waistBack, points.seatBack, backY)
-    points.__tmp1 = new Point(points.styleWaistBack.x * (1 - 0.3), points.styleWaistBack.y)
+    points.styleWaistFrontCp2 = points.styleWaistFront.shift(
+      points.seatFront.angle(points.waistFront) - 90,
+      points.styleWaistFront.x * -0.2
+    )
+    points.waistFrontAngleTarget = utils.beamIntersectsY(
+      points.waistBack,
+      points.seatBack,
+      points.waistBack.y - 2 * measurements.seatBack + measurements.seat
+    )
+
+    const waistAngle = Math.max(
+      0,
+      points.waistFront.angle(points.waistFrontAngleTarget) + options.backCoverage
+    )
+
+    points.waistFrontAngle = points.styleWaistFrontCp2.shift(waistAngle, 10)
+
+    points.styleWaistOut = utils.beamIntersectsX(
+      points.styleWaistFrontCp2,
+      points.waistFrontAngle,
+      0
+    )
+    points.styleWaistBackTemp = utils.beamsIntersect(
+      points.waistBack,
+      points.seatBack,
+      points.styleWaistOut,
+      points.waistFrontAngle
+    )
+    points.styleWaistBack = utils.beamIntersectsY(
+      points.waistBack,
+      points.seatBack,
+      points.styleWaistBackTemp.y
+    )
+
+    points.__tmp1 = new Point(points.styleWaistBack.x * 0.5, points.styleWaistBack.y)
     points.__tmp2 = points.__tmp1.shift(points.seatBack.angle(points.waistBack) + 90, 10)
     points.styleWaistBack = utils.beamsIntersect(
       points.__tmp1,
@@ -439,15 +532,15 @@ export const front = {
       points.waistBack
     )
     points.styleWaistCp1 = points.__tmp1
-    points.styleWaistCp2 = new Point(points.styleWaistBack.x * 0.3, points.styleWaistOut.y)
+    points.styleWaistCp2 = points.styleWaistOut.shift(waistAngle, points.styleWaistBack.x * 0.3)
     paths.waistBand = new Path()
       .move(points.styleWaistBack)
       .curve(points.styleWaistCp1, points.styleWaistCp2, points.styleWaistOut)
-      .line(points.styleWaistFront)
+      .curve(points.styleWaistFrontCp2, points.styleWaistFront, points.styleWaistFront)
 
     let delta = points.styleWaistFront.dy(points.seatFront) * 0.3
     points.styleWaistFrontCp1 = points.styleWaistFront.translate(0, delta)
-    points.styleWaistFrontCp2 = points.seatFront.shiftTowards(points.crotchCp1Front, -delta)
+    points.seatFrontCp1 = points.seatFront.shiftTowards(points.crotchCp1Front, -delta)
 
     for (const key of Object.keys(paths)) {
       paths[key].hide()
@@ -469,7 +562,7 @@ export const front = {
       'Leg circumference: ' +
         units(paths.legFront.length() + paths.legBack.length()) +
         ' (desired: ' +
-        units(measurements.upperLeg * (1 + options.ease)) +
+        units(hemCircumference * (1 + options.ease)) +
         ')'
     )
 
@@ -477,10 +570,10 @@ export const front = {
       msg: 'shale:legCircumference',
       replace: {
         circ: units(paths.legFront.length() + paths.legBack.length()),
-        measurement: units(measurements.upperLeg),
+        measurement: units(hemCircumference),
         pct:
           Math.round(
-            (100 * (paths.legFront.length() + paths.legBack.length())) / measurements.upperLeg - 100
+            (100 * (paths.legFront.length() + paths.legBack.length())) / hemCircumference - 100
           ) + '%',
       },
     })
@@ -507,9 +600,9 @@ export const front = {
       paths.backSplit = new Path().move(points.styleWaistOut).line(points.legOut).hide()
     }
 
-    if (options.pocket && options.splitParts) {
+    if (options.pocket !== 'none' && options.splitParts) {
       // draft pocket
-      const pocketBottom = Math.min(points.legOut.y * 0.95, points.crotchOut.y * 1.25)
+      const pocketBottom = Math.min(points.legOut.y * 0.85, points.crotchOut.y * 1.25)
 
       points.pocketTopLeft = points.styleWaistOut.shiftFractionTowards(points.styleWaistFront, 0.8)
       points.grainlineTop = points.styleWaistOut.shiftFractionTowards(points.styleWaistFront, 0.75)
@@ -517,6 +610,12 @@ export const front = {
         points.styleWaistFront,
         0.25
       )
+      points.pocketTopLeft = paths.waistBand.intersectsX(points.pocketTopLeft.x)[0]
+      points.pocketTopRight = paths.waistBand.intersectsX(points.pocketTopRight.x)[0]
+      paths.pocketTop = paths.waistBand
+        .split(points.pocketTopLeft)[0]
+        .split(points.pocketTopRight)[1]
+        .hide()
       points.pocketBottomLeft = new Point(points.pocketTopLeft.x, pocketBottom)
       points.grainlineBottom = new Point(points.grainlineTop.x, points.pocketBottomLeft.y)
       points.pocketBottomSplit = paths.frontSplit.intersectsY(
@@ -541,7 +640,7 @@ export const front = {
       paths.pocketSeamBase = new Path()
         .move(points.pocketBottomSplit)
         .curve(points.pocketTopRightCp1, points.pocketTopRightCp2, points.pocketTopRight)
-        .line(points.pocketTopLeft)
+        .join(paths.pocketTop)
         .line(points.pocketBottomLeft)
         .line(points.pocketBottomRight)
         .hide()
@@ -566,8 +665,8 @@ export const front = {
     if (options.pocket !== 'inset' || !options.splitParts) {
       paths.seamFront = new Path()
         .move(points.styleWaistOut)
-        .line(points.styleWaistFront)
-        .curve(points.styleWaistFrontCp1, points.styleWaistFrontCp2, points.seatFront)
+        .curve(points.styleWaistFrontCp2, points.styleWaistFront, points.styleWaistFront)
+        .curve(points.styleWaistFrontCp1, points.seatFrontCp1, points.seatFront)
         .curve(points.crotchCp1Front, points.crotchCp2Front, points.forkFront)
         .join(paths.legFront)
         .join(paths.frontSplit)
@@ -575,10 +674,9 @@ export const front = {
         .hide()
     } else {
       paths.frontSplit2 = paths.frontSplit.split(points.pocketBottomSplit)[0].hide()
-      paths.seamFront = new Path()
-        .move(points.pocketTopLeft)
-        .line(points.styleWaistFront)
-        .curve(points.styleWaistFrontCp1, points.styleWaistFrontCp2, points.seatFront)
+      paths.seamFront = paths.waistBand
+        .split(points.pocketTopRight)[1]
+        .curve(points.styleWaistFrontCp1, points.seatFrontCp1, points.seatFront)
         .curve(points.crotchCp1Front, points.crotchCp2Front, points.forkFront)
         .join(paths.legFront)
         .join(paths.frontSplit2)
@@ -614,8 +712,8 @@ export const front = {
         if (options.pocket !== 'inset' || !options.splitParts) {
           paths.saBase = new Path()
             .move(points.styleWaistOut)
-            .line(points.styleWaistFront)
-            .curve(points.styleWaistFrontCp1, points.styleWaistFrontCp2, points.seatFront)
+            .curve(points.styleWaistFrontCp2, points.styleWaistFront, points.styleWaistFront)
+            .curve(points.styleWaistFrontCp1, points.seatFrontCp1, points.seatFront)
             .curve(points.crotchCp1Front, points.crotchCp2Front, points.forkFront)
             .line(points.legFront)
             .hide()
@@ -623,9 +721,8 @@ export const front = {
           paths.saBase = new Path()
             .move(points.pocketBottomSplit)
             .curve(points.pocketTopRightCp1, points.pocketTopRightCp2, points.pocketTopRight)
-            .line(points.pocketTopLeft)
-            .line(points.styleWaistFront)
-            .curve(points.styleWaistFrontCp1, points.styleWaistFrontCp2, points.seatFront)
+            .join(paths.waistBand.split(points.pocketTopRight)[1])
+            .curve(points.styleWaistFrontCp1, points.seatFrontCp1, points.seatFront)
             .curve(points.crotchCp1Front, points.crotchCp2Front, points.forkFront)
             .line(points.legFront)
             .hide()
@@ -656,8 +753,8 @@ export const front = {
           .curve(points.crotchCp2Back, points.crotchCp1Back, points.seatBack)
           .line(points.styleWaistBack)
           .curve(points.styleWaistCp1, points.styleWaistCp2, points.styleWaistOut)
-          .line(points.styleWaistFront)
-          .curve(points.styleWaistFrontCp1, points.styleWaistFrontCp2, points.seatFront)
+          .curve(points.styleWaistFrontCp2, points.styleWaistFront, points.styleWaistFront)
+          .curve(points.styleWaistFrontCp1, points.seatFrontCp1, points.seatFront)
           .curve(points.crotchCp1Front, points.crotchCp2Front, points.forkFront)
           .line(points.legFront)
           .hide()
@@ -676,13 +773,13 @@ export const front = {
     }
 
     store.set(
-      'waistband_back',
+      'waistbandBack',
       new Path()
         .move(points.styleWaistBack)
         .curve(points.styleWaistCp1, points.styleWaistCp2, points.styleWaistOut)
         .length()
     )
-    store.set('waistband_front', points.styleWaistOut.dist(points.styleWaistFront))
+    store.set('waistbandFront', points.styleWaistOut.dist(points.styleWaistFront))
 
     store.cutlist.setCut({ cut: 2, from: 'fabric' })
     points.title = points.crotchCp1Front.shiftFractionTowards(points.seatOut, 0.1)

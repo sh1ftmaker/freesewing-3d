@@ -6,7 +6,7 @@ export const waistbandBack = {
   name: 'shale.waistband-back',
   after: front,
   measurements: [],
-  optionalMeasurements: ['hips', 'waist'],
+  optionalMeasurements: [],
   options: {
     elasticOnlyOnBack: {
       bool: true,
@@ -29,48 +29,41 @@ export const waistbandBack = {
     part,
     store,
   }) => {
-    let height = store.get('waistband_width')
+    let height = store.get('waistbandWidth')
     let length = options.elasticOnlyOnBack
-      ? store.get('waistband_back')
-      : store.get('waistband_back') + store.get('waistband_front')
+      ? store.get('waistbandBack')
+      : store.get('waistbandBack') + store.get('waistbandFront')
+    let waistTarget = store.get('waistTarget')
 
-    if (measurements.waist && measurements.hips) {
-      let waistTarget =
-        measurements.waist * options.waistHeight + measurements.hips * (1 - options.waistHeight)
-      if (measurements.waist > measurements.hips) {
-        waistTarget = measurements.hips
-      }
-
-      // Wider elastic bands tend to compress more, so we need less stretch
-      let elasticStretch = Math.max(0.5, 1 - 4 / store.get('waistband_width'))
-      const frontWidth = options.elasticOnlyOnBack ? store.get('waistband_front') * 2 : 0
-      let elasticLengthMax = Math.max(measurements.waist, measurements.hips) - frontWidth
-      let elasticLengthEst = waistTarget * elasticStretch - frontWidth
-      let elasticMinStretch = (length * 2) / elasticLengthEst - 1
-      if (measurements.hips > measurements.seat) {
-        store.flag.warn({
-          msg: `shale:hipsSeatRatio`,
-        })
-      } else if (
-        options.waistHeight > 0.2 &&
-        (measurements.waist > measurements.hips || elasticMinStretch < 0)
-      ) {
-        store.flag.warn({
-          msg: `shale:waistHipsRatio`,
-        })
-      }
-      if (elasticMinStretch < 0) {
-        elasticMinStretch = 0
-      }
-      store.flag.info({
-        msg: `shale:cutElasticLength`,
-        replace: {
-          length: units(elasticLengthEst),
-          max: units(elasticLengthMax),
-          fac: (elasticMinStretch * 100).toFixed(0),
-        },
+    // Wider elastic bands tend to compress more, so we need less stretch
+    let elasticStretch = Math.max(0.5, 1 - 4 / store.get('waistbandWidth'))
+    const frontWidth = options.elasticOnlyOnBack ? store.get('waistbandFront') * 2 : 0
+    let elasticLengthMax = Math.max(measurements.waist, measurements.hips) - frontWidth
+    let elasticLengthEst = waistTarget * elasticStretch - frontWidth
+    let elasticMinStretch = (length * 2) / elasticLengthEst - 1
+    if (measurements.hips > measurements.seat) {
+      store.flag.warn({
+        msg: `shale:hipsSeatRatio`,
+      })
+    } else if (
+      options.waistHeight > 0.2 &&
+      (measurements.waist > measurements.hips || elasticMinStretch < 0)
+    ) {
+      store.flag.warn({
+        msg: `shale:waistHipsRatio`,
       })
     }
+    if (elasticMinStretch < 0) {
+      elasticMinStretch = 0
+    }
+    store.flag.info({
+      msg: `shale:cutElasticLength`,
+      replace: {
+        length: units(elasticLengthEst),
+        max: units(elasticLengthMax),
+        fac: (elasticMinStretch * 100).toFixed(0),
+      },
+    })
 
     if (expand) {
       store.flag.preset('expandIsOn')
