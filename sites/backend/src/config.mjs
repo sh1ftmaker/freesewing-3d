@@ -66,7 +66,7 @@ const baseConfig = {
         morio: envToBool(process.env.BACKEND_ENABLE_OIDC_CLIENT_MORIO),
         supermorio: envToBool(process.env.BACKEND_ENABLE_OIDC_CLIENT_SUPERMORIO),
         semaphoreui: envToBool(process.env.BACKEND_ENABLE_OIDC_CLIENT_SEMAPHOREUI),
-        zulip: envToBool(process.env.BACKEND_ENABLE_OIDC_CLIENT_ZULIP),
+        matrix: envToBool(process.env.BACKEND_ENABLE_OIDC_CLIENT_MATRIX),
       },
     },
     noCORS: envToBool(process.env.BACKEND_ENABLE_OPEN_API),
@@ -271,11 +271,11 @@ if (baseConfig.use.oidc.provider) {
       response_types: ['code'],
       scope: 'openid email profile',
     })
-  if (baseConfig.use.oidc.clients.zulip)
+  if (baseConfig.use.oidc.clients.matrix)
     baseConfig.oidc.provider.clients.push({
-      client_id: 'zulip',
-      client_secret: process.env['BACKEND_OIDC_CLIENT_ZULIP_SECRET'],
-      redirect_uris: ['https://chat.freesewing.eu/complete/oidc/'],
+      client_id: 'matrix',
+      client_secret: process.env['BACKEND_OIDC_CLIENT_MATRIX_SECRET'],
+      redirect_uris: ['https://matrix.freesewing.eu/_continuwuity/oidc/complete'],
       grant_types: ['authorization_code'],
       response_types: ['code'],
       scope: 'openid email profile',
