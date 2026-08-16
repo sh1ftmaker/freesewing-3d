@@ -15,7 +15,7 @@
     "ribbing",
     "flat-sleeve"
   ],
-  "version": "4.10.0",
+  "version": "4.10.1",
   "pkg": "@freesewing/huey",
   "collection": true
 }

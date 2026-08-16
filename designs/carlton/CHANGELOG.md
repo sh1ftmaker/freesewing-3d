@@ -1,6 +1,12 @@
 # Change log for: @freesewing/carlton
 
 
+## 4.10.1 (2026-08-16)
+
+### Fixed
+
+ - Get sleevecapEase in topSleeve from library's twoPartSleeve part
+
 ## 4.5.0 (2026-02-21)
 
 ### Changed

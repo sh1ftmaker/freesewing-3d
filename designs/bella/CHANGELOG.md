@@ -1,6 +1,12 @@
 # Change log for: @freesewing/bella
 
 
+## 4.10.1 (2026-08-16)
+
+### Added
+
+ - Added optional sleeves
+
 ## 4.2.0 (2025-08-16)
 
 ### Fixed

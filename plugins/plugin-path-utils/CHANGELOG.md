@@ -1,6 +1,12 @@
 # Change log for: @freesewing/plugin-path-utils
 
 
+## 4.10.1 (2026-08-16)
+
+### Changed
+
+ - Improved performance by selective intersecion checking
+
 ## 4.6.0 (2026-03-08)
 
 ### Fixed

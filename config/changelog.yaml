@@ -1,9 +1,30 @@
 Unreleased:
+  Added:
+
+4.10.1:
+  date: 2026-08-16
+
+  Added:
+    bella:
+      - Added optional sleeves
+
+  Changed:
+    plugin-path-utils:
+      - Improved performance by selective intersecion checking
+    sabrina:
+      - Improve draft for large busts
+    shale:
+      - Imrove waistband drafting for large bums
+
   Fixed:
     carlton:
       - Get sleevecapEase in topSleeve from library's twoPartSleeve part
     sasha:
       - Fixed incorrect translation order causing the wrong translation to be used
+    toni:
+      - Fix and modularize chest and line markings
+    waralee:
+      - Fix front pocket title placement
 
 4.10.0:
   date: 2026-06-19

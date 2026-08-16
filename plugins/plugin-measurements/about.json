@@ -1,5 +1,5 @@
 {
   "id": "plugin-measurements",
   "description": "A FreeSewing plugin that adds additional measurements that can be calculated from existing ones",
-  "version": "4.10.0"
+  "version": "4.10.1"
 }

@@ -1,6 +1,12 @@
 # Change log for: @freesewing/waralee
 
 
+## 4.10.1 (2026-08-16)
+
+### Fixed
+
+ - Fix front pocket title placement
+
 ## 4.8.0 (2026-04-18)
 
 ### Fixed

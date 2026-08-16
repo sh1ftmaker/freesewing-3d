@@ -1,6 +1,12 @@
 # Change log for: @freesewing/sasha
 
 
+## 4.10.1 (2026-08-16)
+
+### Fixed
+
+ - Fixed incorrect translation order causing the wrong translation to be used
+
 ## 4.10.0 (2026-06-19)
 
 ### Added

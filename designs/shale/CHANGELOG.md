@@ -1,6 +1,12 @@
 # Change log for: @freesewing/shale
 
 
+## 4.10.1 (2026-08-16)
+
+### Changed
+
+ - Imrove waistband drafting for large bums
+
 ## 4.10.0 (2026-06-19)
 
 ### Added

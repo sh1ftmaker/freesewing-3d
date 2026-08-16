@@ -1,5 +1,5 @@
 {
   "id": "plugin-bin-pack",
   "description": "A FreeSewing plugin that adds a bin-pack algorithm to the core library",
-  "version": "4.10.0"
+  "version": "4.10.1"
 }

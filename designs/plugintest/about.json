@@ -4,7 +4,7 @@
   "code": "Joost De Cock",
   "design": "Joost De Cock",
   "description": "A FreeSewing pattern to test (y)our plugins",
-  "version": "4.10.0",
+  "version": "4.10.1",
   "collection": false,
   "pkg": "@freesewing/rendertest",
   "difficulty": 5

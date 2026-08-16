@@ -1,6 +1,12 @@
 # Change log for: @freesewing/toni
 
 
+## 4.10.1 (2026-08-16)
+
+### Fixed
+
+ - Fix and modularize chest and line markings
+
 ## 4.9.0 (2026-05-25)
 
 ### Added

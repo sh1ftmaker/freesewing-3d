@@ -1,6 +1,12 @@
 # Change log for: @freesewing/sabrina
 
 
+## 4.10.1 (2026-08-16)
+
+### Changed
+
+ - Improve draft for large busts
+
 ## 4.6.0 (2026-03-08)
 
 ### Fixed

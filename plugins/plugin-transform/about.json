@@ -1,5 +1,5 @@
 {
   "id": "plugin-transform",
   "description": "A FreeSewing plugin to transform (translate, rotate, or scale) points or paths",
-  "version": "4.10.0"
+  "version": "4.10.1"
 }

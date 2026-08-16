@@ -13,7 +13,7 @@
     "curved-seam",
     "precision"
   ],
-  "version": "4.10.0",
+  "version": "4.10.1",
   "pkg": "@freesewing/skully",
   "collection": true
 }

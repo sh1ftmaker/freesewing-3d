@@ -7646,8 +7646,8 @@ export const designs = {
       "cutWaistband.d": "The **waistband** is a rectangular piece of main fabric {{{ w }}} wide and {{{ l }}} long.",
       "badArmpitPosition.t": "Error determining armpit position",
       "badArmpitPosition.d": "We could not construct the armhole. This draft might fail or result in a bad fit. Please verify your measurements, especially hps-to-waist-front and waist-to-armpit.",
-      "frontSide": "Front side",
-      "backSide": "Back side"
+      "frontside": "Front side",
+      "backside": "Back side"
     },
     "o": {
       "length": {
@@ -8319,6 +8319,14 @@ export const designs = {
       "waistbandExtraWidth": {
         "t": "Waistband extra width",
         "d": "Make the waistband tunnel a bit wider than the elastic for easier sewing"
+      },
+      "stretch": {
+        "t": "Fit waist (stretch)",
+        "d": "Whether the waist opening will follow the seat circumference or fit to your body"
+      },
+      "backCoverage": {
+        "t": "Back coverage",
+        "d": "Adjust the side angle of the waistband to increase or reduce how much of your bum is covered"
       }
     }
   },

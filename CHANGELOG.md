@@ -3,11 +3,56 @@
 
 ## Unreleased
 
+
+## 4.10.1 (2026-08-16)
+
+### bella
+
+#### Added
+
+ - Added optional sleeves
+
+### carlton
+
+#### Fixed
+
+ - Get sleevecapEase in topSleeve from library's twoPartSleeve part
+
+### sabrina
+
+#### Changed
+
+ - Improve draft for large busts
+
 ### sasha
 
 #### Fixed
 
  - Fixed incorrect translation order causing the wrong translation to be used
+
+### shale
+
+#### Changed
+
+ - Imrove waistband drafting for large bums
+
+### toni
+
+#### Fixed
+
+ - Fix and modularize chest and line markings
+
+### waralee
+
+#### Fixed
+
+ - Fix front pocket title placement
+
+### plugin-path-utils
+
+#### Changed
+
+ - Improved performance by selective intersecion checking
 
 
 ## 4.10.0 (2026-06-19)
