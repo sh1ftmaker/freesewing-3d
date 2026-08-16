@@ -54,6 +54,14 @@
 
  - Improved performance by selective intersecion checking
 
+### backend
+
+#### Added
+
+ - Added OIDC route for chat client (matrix)
+ - Added OIDC route for meet client (jitsi)
+ - Added endpoint for generating Jitsi tokens
+
 
 ## 4.10.0 (2026-06-19)
 

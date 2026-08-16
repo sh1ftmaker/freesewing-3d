@@ -1,6 +1,14 @@
 # Change log for: @freesewing/backend
 
 
+## 4.10.1 (2026-08-16)
+
+### Added
+
+ - Added OIDC route for chat client (matrix)
+ - Added OIDC route for meet client (jitsi)
+ - Added endpoint for generating Jitsi tokens
+
 ## 4.10.0 (2026-06-19)
 
 ### Added
