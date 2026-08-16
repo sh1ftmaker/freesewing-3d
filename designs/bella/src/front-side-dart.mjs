@@ -280,7 +280,7 @@ export const frontSideDart = {
     macro('title', {
       at: points.titleAnchor,
       nr: 1,
-      title: 'front',
+      title: 'frontSideDart',
     })
 
     // Scalebox
@@ -292,6 +292,20 @@ export const frontSideDart = {
       snippet: 'notch',
       on: ['bust', 'armholePitch', 'cfBust'],
     })
+
+    // Store values for sleeve
+    paths.armhole = new Path()
+      .move(points.armhole)
+      .curve(points.armholeCp2, points.armholePitchCp1, points.armholePitch)
+      .curve_(points.armholePitchCp2, points.shoulder)
+      .hide()
+    paths.armholeToPitch = new Path()
+      .move(points.armhole)
+      .curve(points.armholeCp2, points.armholePitchCp1, points.armholePitch)
+      .hide()
+    store.set('library.sleeve.frontArmholeLength', paths.armhole.length())
+    store.set('library.sleeve.frontArmholeToArmholePitch', paths.armholeToPitch.length())
+    store.set('library.sleeve.title', { nr: 3 })
 
     // Dimensions
     let dimensionOffset = 0

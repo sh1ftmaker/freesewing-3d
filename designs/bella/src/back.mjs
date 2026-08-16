@@ -308,6 +308,19 @@ export const back = {
       on: ['armholePitch', 'bustCenter'],
     })
 
+    // Store values for sleeve
+    paths.armhole = new Path()
+      .move(points.armhole)
+      .curve(points.armholeCp2, points.armholePitchCp1, points.armholePitch)
+      .curve_(points.armholePitchCp2, points.shoulder)
+      .hide()
+    paths.armholeToPitch = new Path()
+      .move(points.armhole)
+      .curve(points.armholeCp2, points.armholePitchCp1, points.armholePitch)
+      .hide()
+    store.set('library.sleeve.backArmholeLength', paths.armhole.length())
+    store.set('library.sleeve.backArmholeToArmholePitch', paths.armholeToPitch.length())
+
     // Dimensions
     macro('vd', {
       id: 'hHemToWaistDartTop',
