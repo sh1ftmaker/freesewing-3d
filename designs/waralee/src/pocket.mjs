@@ -38,6 +38,15 @@ export const pocket = {
         (frontPocketSize / 4) * cbqc
       )
 
+      points.title = points.topLeft.shift(270, 50).shift(0, 50)
+      macro('title', {
+        nr: 3,
+        at: points.title,
+        title: 'pocket',
+        scale: 0.5,
+        align: 'center',
+      })
+
       paths.seam = new Path()
         .move(points.topLeft)
         .line(points.bottomLeftCornerUp)
@@ -61,6 +70,15 @@ export const pocket = {
     } else {
       paths.frontPocketSeam.unhide().setClass('fabric')
 
+      points.title = points.frontPocketTopLeft.shift(270, 75).shift(0, 30)
+      macro('title', {
+        nr: 3,
+        at: points.title,
+        title: 'pocket',
+        scale: 0.5,
+        align: 'center',
+      })
+
       if (sa) {
         paths.sa = paths.frontPocketSeamSA.offset(sa).close().addClass('fabric sa')
       }
@@ -74,13 +92,6 @@ export const pocket = {
     }
 
     store.cutlist.addCut({ cut: 2, from: 'lining' })
-
-    points.title = points.frontPocketTopLeft.shift(270, 75).shift(0, 50)
-    macro('title', {
-      nr: 3,
-      at: points.title,
-      title: 'pocket',
-    })
 
     points.logo = points.title.shift(270, 75)
     snippets.logo = new Snippet('logo', points.logo)
