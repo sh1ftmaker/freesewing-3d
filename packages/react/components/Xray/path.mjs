@@ -14,6 +14,29 @@ const Cp = ({ at }) => (
   <circle cx={at.x} cy={at.y} r={0.75} className="stroke-md opacity-50  text-warning" />
 )
 
+// Close to the core Path.divide() function, but working with display paths instead of Path objects
+const dividePath = function (path) {
+  let result = []
+  let current
+  for (let i in path.ops) {
+    let op = path.ops[i]
+    if (op.type === 'move') {
+      result.push({ op: op, p: current ? { ops: [{ type: 'move', to: current }, op] } : null })
+    } else if (op.type === 'line') {
+      result.push({ op: op, p: { ops: [{ type: 'move', to: current }, op] } })
+    } else if (op.type === 'curve') {
+      result.push({ op: op, p: { ops: [{ type: 'move', to: current }, op] } })
+    } else if (op.type === 'close') {
+      result.push({ op: op, p: { ops: [{ type: 'move', to: current }, op] } })
+    } else {
+      result.push({ op: op, p: null })
+    }
+    if (op.to) current = op.to
+  }
+
+  return result
+}
+
 export const PathXray = ({
   stackName,
   pathName,
@@ -185,42 +208,48 @@ const PathXrayInfo = ({ path, pathName, stackName }) => {
                 {rounded ? 'Show raw' : 'Show rounded'}
               </button>
             </th>
+            <th>Length</th>
           </tr>
         </thead>
         <tbody>
-          {path.ops.map((op, i) => (
-            <tr key={i}>
-              <td className="tw:text-right tw:font-bold tw:w-16">{op.type}</td>
-              {['move', 'line'].includes(op.type) ? (
-                <td className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
-                  <b className="tw:text-xs tw:opacity-80 tw:block tw:w-8">To:</b>
-                  <KeyVal k="x" val={rounder(op.to.x)} />
-                  <KeyVal k="y" val={rounder(op.to.y)} />
-                </td>
-              ) : null}
-              {op.type === 'close' ? <td></td> : null}
-              {op.type === 'curve' ? (
-                <td className="tw:flex tw:flex-col tw:gap-1">
-                  <div className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
-                    <b className="tw:text-xs tw:opacity-80 tw:block tw:w-8">Cp1:</b>
-                    <KeyVal k="x" val={rounder(op.cp1.x)} />
-                    <KeyVal k="y" val={rounder(op.cp1.y)} />
-                  </div>
-                  <div className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
-                    <b className="tw:text-xs tw:opacity-80 tw:block tw:w-8">Cp2:</b>
-                    <KeyVal k="x" val={rounder(op.cp2.x)} />
-                    <KeyVal k="y" val={rounder(op.cp2.y)} />
-                  </div>
-                  <div className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
+          {dividePath(path).map((division, i) => {
+            const op = division.op
+            const subPath = division.p
+            return (
+              <tr key={i}>
+                <td className="tw:text-right tw:font-bold tw:w-16">{op.type}</td>
+                {['move', 'line'].includes(op.type) ? (
+                  <td className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
                     <b className="tw:text-xs tw:opacity-80 tw:block tw:w-8">To:</b>
                     <KeyVal k="x" val={rounder(op.to.x)} />
                     <KeyVal k="y" val={rounder(op.to.y)} />
-                  </div>
-                </td>
-              ) : null}
-              {op.type === 'noop' ? <td>{op.id}</td> : null}
-            </tr>
-          ))}
+                  </td>
+                ) : null}
+                {op.type === 'close' ? <td></td> : null}
+                {op.type === 'curve' ? (
+                  <td className="tw:flex tw:flex-col">
+                    <div className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
+                      <b className="tw:text-xs tw:opacity-80 tw:block tw:w-8">Cp1:</b>
+                      <KeyVal k="x" val={rounder(op.cp1.x)} />
+                      <KeyVal k="y" val={rounder(op.cp1.y)} />
+                    </div>
+                    <div className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
+                      <b className="tw:text-xs tw:opacity-80 tw:block tw:w-8">Cp2:</b>
+                      <KeyVal k="x" val={rounder(op.cp2.x)} />
+                      <KeyVal k="y" val={rounder(op.cp2.y)} />
+                    </div>
+                    <div className="tw:flex tw:flex-row tw:flex-wrap tw:gap-1 tw:items-center">
+                      <b className="tw:text-xs tw:opacity-80 tw:block tw:w-8">To:</b>
+                      <KeyVal k="x" val={rounder(op.to.x)} />
+                      <KeyVal k="y" val={rounder(op.to.y)} />
+                    </div>
+                  </td>
+                ) : null}
+                {op.type === 'noop' ? <td>{op.id}</td> : null}
+                <td>{subPath ? <KeyVal k="mm" val={rounder(pathLength(subPath))} /> : '-'}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
       <H6>Pathstring</H6>
