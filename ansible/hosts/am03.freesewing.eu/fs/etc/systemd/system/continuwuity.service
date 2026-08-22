@@ -1,0 +1,41 @@
+# /etc/systemd/system/continuwuity.service
+[Unit]
+Description=Continuwuity Matrix server
+Documentation=https://continuwuity.org/
+# Make sure the Docker service is available
+After=docker.service
+Requires=docker.service
+
+[Service]
+# Load environment file to allow changing presets
+EnvironmentFile=-/etc/continuwuity/service.env
+
+# Make sure to stop & remove the container if it's running
+ExecStartPre=/usr/bin/docker rm -f continuwuity
+
+# Start the core container
+ExecStart=/usr/bin/docker run --rm \
+  --name=continuwuity \
+  --hostname=continuwuity \
+  --log-driver=journald \
+  --log-opt labels=continuwuity.service \
+  --network=morionet \
+  --network-alias=continuwuity.internal \
+  -v "${CONTINUWUITY_CONFIG_ROOT}:/etc/continuwuity" \
+  -v "${CONTINUWUITY_DATA_ROOT}/data:/var/lib/conduwuit" \
+  -v "${CONTINUWUITY_DATA_ROOT}/backups:/var/lib/conduwuit-backups" \
+  -v "${CONTINUWUITY_LOGS_ROOT}:/var/log/continuwuity" \
+  -e "CONTINUWUITY_CONFIG=/etc/continuwuity/config.toml" \
+  ${CONTINUWUITY_CONTAINER_IMAGE}:${CONTINUWUITY_CONTAINER_TAG}
+
+# Down too often:
+#  forgejo.ellis.link/continuwuation/continuwuity:latest-maxperf
+
+# Always restart
+Restart=always
+
+# Identifier for syslog
+SyslogIdentifier=continuwuity
+
+[Install]
+WantedBy=default.target

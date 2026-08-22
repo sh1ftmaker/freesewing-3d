@@ -1,0 +1,32 @@
+# /etc/systemd/system/element-web.service
+[Unit]
+Description=Element web
+Documentation=https://github.com/element-hq/element-web
+# Make sure the Docker service is available
+After=docker.service
+Requires=docker.service
+
+[Service]
+# Make sure to stop & remove the container if it's running
+ExecStartPre=/usr/bin/docker rm -f continuwuity
+
+# Start the core container
+ExecStart=/usr/bin/docker run --rm \
+  --name=element-web \
+  --hostname=element-web \
+  --log-driver=journald \
+  --log-opt labels=element-web.service \
+  --network=morionet \
+  --network-alias=element-web.internal \
+  -v "/etc/element-web/config.json:/app/config.json" \
+  -v "/etc/element-web/config.json:/app/config.chat.freesewing.eu.json" \
+  vectorim/element-web
+
+# Always restart
+Restart=always
+
+# Identifier for syslog
+SyslogIdentifier=element-web
+
+[Install]
+WantedBy=default.target

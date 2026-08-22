@@ -1,0 +1,47 @@
+## See: https://continuwuity.org/configuration.html
+[global]
+server_name = "freesewing.eu"
+address = "0.0.0.0"
+port = 8008
+database_path = "/var/lib/conduwuit"
+database_backup_path = "/var/lib/conduwuit-backups"
+database_backups_to_keep = 3
+new_user_displayname_suffix = "💀"
+allow_announcements_check = true
+max_request_size = 20971520
+allow_deactivation = true
+allow_encryption = true
+allow_federation = false
+require_auth_for_profile_requests = true
+allow_room_creation = true
+log = "info"
+log_colors = false
+log_to_journald = true
+rocksdb_log_level = "error"
+rocksdb_max_log_file_size = 4194304
+rocksdb_optimize_for_spinning_disks = false
+rocksdb_direct_io = true
+rocksdb_compression_algo = "none"
+allow_web_indexing = false
+allow_registration = false
+## Enabling auto_join_rooms breaks with:
+## Service "membership" does not exist or has not been built yet.
+## auto_join_rooms = ["#welcome:freesewing.eu"]
+admin_console_automatic = true
+
+[global.well_known]
+client = "https://matrix.freesewing.eu"
+server = "matrix.freesewing.eu:443"
+support_page = "https://freesewing.eu/support"
+support_email = "support@freesewing.eu"
+
+[global.oauth.oidc]
+discovery_url = "https://backend.freesewing.eu"
+client_id = "matrix"
+client_secret_file = "/etc/continuwuity/oidc_client_secret"
+additional_scopes = ["profile", "email"]
+prompt_for_localpart = false
+preferred_username_claim = "sub"
+email_claim = "email"
+profile_key_map = { displayname = "preferred_username", avatar_url = "picture" }
+profile_key_import_mode = "on_login"
