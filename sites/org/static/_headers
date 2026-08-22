@@ -3,3 +3,6 @@
 
 /newsletter/rss.xml
   Cache-Control: public, max-age=3600, must-revalidate
+
+/.well-known/matrix/client
+  Access-Control-Allow-Origin: *
