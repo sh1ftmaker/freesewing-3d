@@ -24,9 +24,7 @@ rocksdb_direct_io = true
 rocksdb_compression_algo = "none"
 allow_web_indexing = false
 allow_registration = false
-## Enabling auto_join_rooms breaks with:
-## Service "membership" does not exist or has not been built yet.
-## auto_join_rooms = ["#welcome:freesewing.eu"]
+auto_join_rooms = ["#welcome:freesewing.eu"]
 admin_console_automatic = true
 
 [global.well_known]
