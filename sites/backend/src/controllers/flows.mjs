@@ -92,7 +92,7 @@ FlowsController.prototype.mintJitsiToken = async (req, res, tools, guest = false
       iss: tools.config.jitsi.appId,
       sub: 'meet.jitsi',
       room: moderator ? '*' : 'hangout',
-      exp: Math.floor(Date.now() / 1000) + 60 * 5,
+      exp: Math.floor(Date.now() / 1000) + 60 * 180,
     },
     tools.config.jitsi.secret,
     { algorithm: 'HS256' }
