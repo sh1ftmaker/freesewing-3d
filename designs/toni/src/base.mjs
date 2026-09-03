@@ -212,7 +212,9 @@ export const base = {
 
     // Center back (cb) vertical axis
     points.cbHps = new Point(0, 0)
-    points.cbChest = new Point(0, measurements.hpsToBust)
+    if (measurements.hpsToBust) {
+      points.cbChest = new Point(0, measurements.hpsToBust)
+    }
     points.cbWaist = new Point(0, measurements.hpsToWaistBack)
 
     // Shoulder line
@@ -248,7 +250,7 @@ export const base = {
       })
     }
 
-    if (points.cbArmpit.y * 1.1 >= points.bust.y) {
+    if (points.bust && points.cbArmpit.y * 1.1 >= points.bust.y) {
       store.flag.error({
         msg: 'toni:lowArmpit',
       })
