@@ -19,7 +19,7 @@ export const front = {
   from: base,
   name: 'toni.front',
   hide: { from: true },
-  optionalMeasurements: ['hpsToBust', 'bustSpan'],
+  optionalMeasurements: ['hpsToBust', 'bustSpan', 'hpsToWaistFront'],
   after: back,
   options: {
     raglanAngleFront: {
@@ -308,6 +308,11 @@ export const front = {
       points[`cf${key}`] = new Point(points[`cb${key}`].x, points[`cb${key}`].y)
       // delete points[`cb${key}`]
     }
+
+    if (measurements.hpsToWaistFront) {
+      points.cfWaist = new Point(0, measurements.hpsToWaistFront)
+    }
+
     // Front neckline points
     points.neckCp2 = new Point(points.neckCp2Front.x, points.neckCp2Front.y)
     store.set(
@@ -660,7 +665,13 @@ export const front = {
       paths.sideHelper = paths.sideSeam.clone().hide()
     }
 
-    drawHelpLine(part, 'sideChestNotch', 'chestLine', points.cbChest, store.get('sideChestOffset'))
+    drawHelpLine(
+      part,
+      'sideChestNotch',
+      'chestLine',
+      points.cfBust || points.cbChest,
+      store.get('sideChestOffset')
+    )
 
     if (expand) {
       macro('mirror', {

@@ -493,7 +493,7 @@ export const back = {
 
     // Bust line
     if (points.bust) {
-      const chest = paths.sideSeam.intersectsY(points.bust.y)
+      const chest = paths.sideSeam.intersectsY(points.cbChest.y)
       points.chest = chest[0] ?? new Point(points.armhole.x, points.bust.y)
       setOffset('sideChestOffset', points.chest.y)
     }

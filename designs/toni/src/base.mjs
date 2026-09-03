@@ -213,7 +213,18 @@ export const base = {
     // Center back (cb) vertical axis
     points.cbHps = new Point(0, 0)
     if (measurements.hpsToBust) {
-      points.cbChest = new Point(0, measurements.hpsToBust)
+      let hpsToBustBack
+      if (options.draftForHighBust) {
+        // Estimate "hpsToBustBack" for people with larger chest
+        // This estimation is based on a few available measurement sets and
+        // might be questionable, but is only used for the visual chest line marking,
+        // so it's not very critical
+        hpsToBustBack = measurements.hpsToBust * 0.5 + measurements.hpsToWaistBack * 0.31
+      } else {
+        // If bust correction is disabled, use the straight measurement
+        hpsToBustBack = measurements.hpsToBust
+      }
+      points.cbChest = new Point(0, hpsToBustBack)
     }
     points.cbWaist = new Point(0, measurements.hpsToWaistBack)
 
