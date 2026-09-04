@@ -115,7 +115,7 @@ function tinaFront({
   if (options.frontCoverage > 0) {
     store.splitDist = sa ? sa * 4 : 40
 
-    const dartHeight = points.endDart.dy(points.startDart)
+    const dartHeight = points.endDart ? points.endDart.dy(points.startDart) : 0
     sideOffset =
       points.sideHem.y * (1 - options.frontCoverage) +
       (points.underbust.y + dartHeight) * options.frontCoverage
