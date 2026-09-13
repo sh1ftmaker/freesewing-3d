@@ -4,7 +4,7 @@
   "code": "Joost De Cock",
   "design": "Joost De Cock",
   "description": "A FreeSewing pattern holding examples for our documentation",
-  "version": "4.10.1",
+  "version": "4.10.2",
   "collection": false,
   "pkg": "@freesewing/examples",
   "difficulty": 5

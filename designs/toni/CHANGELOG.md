@@ -3,6 +3,10 @@
 
 ## 4.10.1 (2026-08-16)
 
+### Added
+
+ - Avoid crash when the optional hpsToBust measurement is missing
+
 ### Fixed
 
  - Fix and modularize chest and line markings

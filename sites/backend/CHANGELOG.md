@@ -9,6 +9,10 @@
  - Added OIDC route for meet client (jitsi)
  - Added endpoint for generating Jitsi tokens
 
+### Changed
+
+ - Switched JWT signing algorithm from (symmetric) RS256 to (assymetric) ES256 to allow verification by third-parties
+
 ## 4.10.0 (2026-06-19)
 
 ### Added

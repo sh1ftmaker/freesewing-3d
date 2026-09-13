@@ -1,6 +1,12 @@
 # Change log for: @freesewing/tina
 
 
+## 4.10.1 (2026-08-16)
+
+### Fixed
+
+ - Set dart height to zero when bust adjustment is disabled
+
 ## 4.9.0 (2026-05-25)
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "name": "@freesewing/react",
-  "version": "4.10.1",
+  "version": "4.10.2",
   "description": "React components, hooks and context for FreeSewing frontends",
   "author": "Joost De Cock <joost@joost.at> (https://codeberg.org/joostdecock)",
   "homepage": "https://freesewing.eu/",
@@ -100,7 +100,7 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "@freesewing/bonny": "4.10.1"
+    "@freesewing/bonny": "4.10.2"
   },
   "dependencies": {
     "@codemirror/lang-yaml": "^6.1.2",

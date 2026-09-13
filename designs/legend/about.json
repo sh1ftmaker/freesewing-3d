@@ -4,7 +4,7 @@
   "code": "Joost De Cock",
   "design": "Joost De Cock",
   "description": "A FreeSewing pattern to document pattern notation",
-  "version": "4.10.1",
+  "version": "4.10.2",
   "collection": false,
   "pkg": "@freesewing/rendertest",
   "difficulty": 5

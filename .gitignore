@@ -4,6 +4,9 @@ dump
 local
 oidc-jwks.json
 
+# For now, to avoid committing this. See #871
+sites/eu
+
 # .env
 .env
 *.key

@@ -1,5 +1,5 @@
 {
   "id": "plugin-versionfree-svg",
   "description": "A FreeSewing plugin to keep version info out of your SVG to allow easy diffs across versions",
-  "version": "4.10.1"
+  "version": "4.10.2"
 }

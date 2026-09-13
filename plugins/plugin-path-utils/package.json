@@ -1,6 +1,6 @@
 {
   "name": "@freesewing/plugin-path-utils",
-  "version": "4.10.1",
+  "version": "4.10.2",
   "description": "A FreeSewing plugin that adds various path helper macros",
   "author": "Joost De Cock <joost@joost.at> (https://codeberg.org/joostdecock)",
   "homepage": "https://freesewing.eu/",
@@ -36,7 +36,7 @@
     "testci": "NODE_OPTIONS=\"--conditions=internal\" npx mocha tests/*.test.mjs --reporter ../../tests/reporters/terse.js"
   },
   "peerDependencies": {
-    "@freesewing/core": "4.10.1"
+    "@freesewing/core": "4.10.2"
   },
   "dependencies": {},
   "devDependencies": {

@@ -1,6 +1,12 @@
 # Change log for: @freesewing/config
 
 
+## 4.10.1 (2026-08-16)
+
+### Added
+
+ - Added list of measurements from top to bottom (#904)
+
 ## 4.7.0 (2026-03-27)
 
 ### Changed

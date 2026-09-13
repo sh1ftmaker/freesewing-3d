@@ -1,5 +1,5 @@
 {
   "id": "studio",
   "description": "Initializer package for a the FreeSewing design studio: npx @freesewing/studio",
-  "version": "4.10.1"
+  "version": "4.10.2"
 }

@@ -16,7 +16,7 @@
     "pocket",
     "curved-seam"
   ],
-  "version": "4.10.1",
+  "version": "4.10.2",
   "collection": true,
   "pkg": "@freesewing/percy"
 }

@@ -36,7 +36,17 @@
 
  - Imrove waistband drafting for large bums
 
+### tina
+
+#### Fixed
+
+ - Set dart height to zero when bust adjustment is disabled
+
 ### toni
+
+#### Added
+
+ - Avoid crash when the optional hpsToBust measurement is missing
 
 #### Fixed
 
@@ -54,6 +64,18 @@
 
  - Improved performance by selective intersecion checking
 
+### config
+
+#### Added
+
+ - Added list of measurements from top to bottom (#904)
+
+### react
+
+#### Added
+
+ - Support sorting measurements from top to bottom (#904)
+
 ### backend
 
 #### Added
@@ -61,6 +83,10 @@
  - Added OIDC route for chat client (matrix)
  - Added OIDC route for meet client (jitsi)
  - Added endpoint for generating Jitsi tokens
+
+#### Changed
+
+ - Switched JWT signing algorithm from (symmetric) RS256 to (assymetric) ES256 to allow verification by third-parties
 
 
 ## 4.10.0 (2026-06-19)

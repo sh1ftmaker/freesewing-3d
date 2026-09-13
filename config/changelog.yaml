@@ -11,6 +11,12 @@ Unreleased:
       - Added endpoint for generating Jitsi tokens
     bella:
       - Added optional sleeves
+    config:
+      - Added list of measurements from top to bottom (#904)
+    react:
+      - Support sorting measurements from top to bottom (#904)
+    toni:
+      - Avoid crash when the optional hpsToBust measurement is missing
 
   Changed:
     backend:
@@ -27,6 +33,8 @@ Unreleased:
       - Get sleevecapEase in topSleeve from library's twoPartSleeve part
     sasha:
       - Fixed incorrect translation order causing the wrong translation to be used
+    tina:
+      - Set dart height to zero when bust adjustment is disabled
     toni:
       - Fix and modularize chest and line markings
     waralee:

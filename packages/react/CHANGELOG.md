@@ -1,6 +1,12 @@
 # Change log for: @freesewing/react
 
 
+## 4.10.1 (2026-08-16)
+
+### Added
+
+ - Support sorting measurements from top to bottom (#904)
+
 ## 4.10.0 (2026-06-19)
 
 ### Fixed
