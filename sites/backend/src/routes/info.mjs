@@ -26,4 +26,14 @@ export function infoRoutes(tools) {
    * Note that this does not require auth, this info is public.
    */
   app.get('/info/authors', (req, res) => Info.getAuthorInfo(req, res, tools))
+
+  /*
+   * Get list of moderators
+   *
+   * This maps UUIDs for users with a moderator or higher role (support, admin)
+   * to their username. This makes it easier to figure out who moderated what.
+   *
+   * Note that this does not require auth, this info is public.
+   */
+  app.get('/info/moderators', (req, res) => Info.getModeratorInfo(req, res, tools))
 }

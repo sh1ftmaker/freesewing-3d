@@ -1,5 +1,10 @@
 Unreleased:
   Added:
+    backend:
+      - Added a moderators endpoint, similar to authors
+  Changed:
+    backend:
+      - Authors endpoint returns a simple uuid-username lookup object
 
 4.10.1:
   date: 2026-08-16

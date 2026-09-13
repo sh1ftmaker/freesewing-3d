@@ -132,13 +132,38 @@ InfoController.prototype.getAuthorInfo = async (req, res, tools) => {
     tools.log.error(`Failed to get author info: ${err.message}`)
   }
 
-  return result?.errors
-    ? res.status(500).send(result)
-    : res.send(
-        result.map((user) => ({
-          id: user.id,
-          uuid: user.uuid,
-          username: user.username,
-        }))
-      )
+  if (result.errors) return res.status(500).send(result)
+
+  // Create a uuid => username lookup object
+  const authors = {}
+  for (const author of result) authors[author.uuid] = author.username
+
+  return res.send(authors)
+}
+
+/*
+ * Get info on moderators
+ */
+InfoController.prototype.getModeratorInfo = async (req, res, tools) => {
+  let result = { errors: ['Failed to run query'] }
+
+  /*
+   * Load all moderators from the database
+   */
+  try {
+    result = await tools.prisma.user.findMany({
+      where: { role: { in: ['admin', 'support', 'moderator'] } },
+      limit: 500,
+    })
+  } catch (err) {
+    tools.log.error(`Failed to get moderator info: ${err.message}`)
+  }
+
+  if (result.errors) return res.status(500).send(result)
+
+  // Create a uuid => username lookup object
+  const moderators = {}
+  for (const mod of result) moderators[mod.uuid] = mod.username
+
+  return res.send(moderators)
 }
