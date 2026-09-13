@@ -24,14 +24,17 @@ export const api = process.env.BACKEND_URL || `http://localhost:${port}`
 /*
  * Generate/Check keys only once.
  *
- * We use three distinct keys so that a compromise of one does not
+ * We use distinct keys so that a compromise of one does not
  * automatically compromise the others:
  *   - BACKEND_ENC_KEY   : AES-256 encryption of data at rest
- *   - BACKEND_JWT_KEY   : HMAC signing of JWTs (falls back to enc key)
+ *   - BACKEND_JWT_KEY   : HMAC signing of JWTs (falls back to enc key) (old symmetric algorithm)
+ *   - BACKEND_JWT_PUBLIC_KEY: Public key for verification of JWTs (new assymetric algorithm)
+ *   - BACKEND_JWT_PRIVATE_KEY: Public key for verification of JWTs (new assymetric algorithm)
  *   - BACKEND_COOKIE_KEY: Signing of OIDC session cookies (falls back to enc key)
  */
 const encryptionKey = process.env.BACKEND_ENC_KEY || ensureKey('encryption', 64)
 const jwtKey = process.env.BACKEND_JWT_KEY || ensureKey('jwt', 64)
+const jwtPrivateKey = (readFileSync('jwt.private.pem', 'utf-8') || '').trim()
 const cookie1Key = process.env.BACKEND_COOKIE_KEY || ensureKey('cookie1', 32)
 const cookie2Key = process.env.BACKEND_COOKIE_KEY || ensureKey('cookie2', 32)
 
@@ -108,7 +111,7 @@ const baseConfig = {
     url: process.env.BACKEND_EXPORTS_URL || 'https://static.freesewing.eu/export/',
   },
   jwt: {
-    secretOrKey: jwtKey,
+    secretOrKey: jwtPrivateKey ? jwtPrivateKey : jwtKey,
     issuer: api,
     expiresIn: process.env.BACKEND_JWT_EXPIRY || '7d',
   },

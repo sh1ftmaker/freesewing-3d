@@ -8,7 +8,10 @@ oidc-jwks.json
 .env
 *.key
 *.env
+*.private.pem
+*.public.pem
 !ansible/hosts/am02.freesewing.eu/fs/etc/backend/service.env
+
 
 # Plugins
 plugins/plugin-theme/src/bundle.css.js

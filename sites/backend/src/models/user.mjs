@@ -1587,6 +1587,18 @@ UserModel.prototype.asAccountList = async function (list) {
  */
 UserModel.prototype.getToken = function () {
   /*
+   * Prepare the sign options
+   */
+  const options = { expiresIn: this.config.jwt.expiresIn }
+  /*
+   * If we're using a modern assymetric signing key, set the correct algorithm
+   */
+  if (this.config.jwt.secretOrKey.includes('BEGIN EC PRIVATE KEY')) {
+    console.log({ key: this.config.jwt.secretOrKey })
+    options.algorithm = 'ES256'
+  }
+
+  /*
    * Call the jwt library with the correct config
    */
   return jwt.sign(
@@ -1600,7 +1612,7 @@ UserModel.prototype.getToken = function () {
       iss: this.config.jwt.issuer,
     },
     this.config.jwt.secretOrKey,
-    { expiresIn: this.config.jwt.expiresIn }
+    options
   )
 }
 

@@ -13,6 +13,8 @@ Unreleased:
       - Added optional sleeves
 
   Changed:
+    backend:
+      - Switched JWT signing algorithm from (symmetric) RS256 to (assymetric) ES256 to allow verification by third-parties
     plugin-path-utils:
       - Improved performance by selective intersecion checking
     sabrina:
