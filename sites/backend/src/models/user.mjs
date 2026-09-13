@@ -1594,7 +1594,6 @@ UserModel.prototype.getToken = function () {
    * If we're using a modern assymetric signing key, set the correct algorithm
    */
   if (this.config.jwt.secretOrKey.includes('BEGIN EC PRIVATE KEY')) {
-    console.log({ key: this.config.jwt.secretOrKey })
     options.algorithm = 'ES256'
   }
 
