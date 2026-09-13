@@ -3,6 +3,7 @@ import {
   control as controlConfig,
   isDegreeMeasurement,
   measurements,
+  topToBottomMeasurements,
   urls,
 } from '@freesewing/config'
 import { measurements as measurementTranslations } from '@freesewing/i18n'
@@ -80,6 +81,7 @@ export const Set = ({ uuid, publicOnly = false, Link = false }) => {
   const { setModal } = useContext(ModalContext)
 
   const [filter, setFilter] = useState(false)
+  const [sort, toggleSort] = useState(false)
   const [edit, setEdit] = useState(false)
   const [suggest, setSuggest] = useState(false)
   const [render, setRender] = useState(false)
@@ -143,8 +145,10 @@ export const Set = ({ uuid, publicOnly = false, Link = false }) => {
     }
   }, [uuid, publicOnly])
 
+  const allMeasurementsOrdered = sort ? topToBottomMeasurements : measurements
+  const subsetMeasurements = filter ? designMeasurements[filter] : measurements
   const filterMeasurements = () =>
-    filter ? designMeasurements[filter].sort() : measurements.sort()
+    allMeasurementsOrdered.filter((m) => subsetMeasurements.indexOf(m) >= 0)
 
   if (!uuid || !mset) return null
 
@@ -482,6 +486,9 @@ export const Set = ({ uuid, publicOnly = false, Link = false }) => {
           firstOption={<option value="">(No filter)</option>}
         />
       </div>
+      <button className="tw:daisy-btn tw:w-full tw:mt-4" onClick={() => toggleSort(!sort)}>
+        Sort {sort ? 'A->Z' : '\u{1F464}->\u{1F9B6}'}
+      </button>
       {filterMeasurements().map((m) => (
         <MeasurementInput
           id={`measie-${m}`}

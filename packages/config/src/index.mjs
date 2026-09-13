@@ -1,6 +1,11 @@
 import { control, controlDesc } from './control.mjs'
 import { logoPath } from './logo.mjs'
-import { measurements, degreeMeasurements, isDegreeMeasurement } from './measurements.mjs'
+import {
+  measurements,
+  topToBottomMeasurements,
+  degreeMeasurements,
+  isDegreeMeasurement,
+} from './measurements.mjs'
 import { sewingTechniques } from './sewing.mjs'
 import { roles, uiRoles } from './roles.mjs'
 import { urls, relPath } from './urls.mjs'
@@ -21,6 +26,7 @@ export {
   isDegreeMeasurement,
   sewingTechniques,
   roles,
+  topToBottomMeasurements,
   uiRoles,
   urls,
   relPath,
