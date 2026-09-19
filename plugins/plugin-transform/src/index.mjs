@@ -26,7 +26,7 @@ export const plugin = {
       for (const pathId of paths) {
         // Make sure the path exists
         if (this.paths[pathId]) {
-          const path = clone ? this.paths[pathId].clone() : this.paths[pathId]
+          let path = clone ? this.paths[pathId].clone() : this.paths[pathId]
 
           const newId = clone
             ? typeof prefix == 'function'
@@ -36,10 +36,10 @@ export const plugin = {
 
           switch (transform) {
             case 'rotate':
-              this.paths[newId] = path.rotate(angle, c)
+              path = path.rotate(angle, c, true)
               break
             case 'translate':
-              this.paths[newId] = path.translate(x, y)
+              path = path.translate(x, y)
               break
             case 'scale':
               for (const op of path.ops) {
@@ -52,33 +52,37 @@ export const plugin = {
                     op.to = scalePoint(op.to, x, y, c)
                 }
               }
-              this.paths[newId] = path
           }
+          this.paths[newId] = path
         }
       }
 
       for (const pointId of points) {
         // Make sure the point exists
         if (this.points[pointId]) {
-          const point = clone ? this.points[pointId].clone() : this.points[pointId]
-
           const newId = clone
             ? typeof prefix == 'function'
               ? prefix(pointId, 'point')
               : `${prefix}${pointId}`
             : pointId
 
+          let point = this.points[pointId]
           switch (transform) {
             case 'rotate':
-              this.points[newId] = point.rotate(angle, c)
+              point = point.rotate(angle, c)
               break
             case 'translate':
-              this.points[newId] = point.translate(x, y)
+              point = point.translate(x, y)
               break
             case 'scale':
-              this.points[newId] = scalePoint(point, x, y, c)
+              point = scalePoint(point, x, y, c)
               break
           }
+          if (clone) {
+            this.points[newId] = this.points[pointId].clone()
+          }
+          this.points[newId].x = point.x
+          this.points[newId].y = point.y
         }
       }
     },
