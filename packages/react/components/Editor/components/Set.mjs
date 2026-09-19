@@ -141,7 +141,7 @@ export const BookmarkedSetPicker = ({
             const [status, body] = await backend.getSet(uuid)
             if (status === 200 && body.result === 'success') {
               const [hasMeasies] = hasRequiredMeasurements(Design, body.set.measies)
-              loadedSets[body.set.id] = { ...body.set, hasMeasies }
+              loadedSets[body.set.uuid] = { ...body.set, hasMeasies }
             }
           } catch (err) {
             console.log(err)
