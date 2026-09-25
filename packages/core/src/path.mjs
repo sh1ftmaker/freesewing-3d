@@ -979,10 +979,9 @@ Path.prototype.setText = function (text = '', className = false) {
  * Returns a point that lies at distance along this Path
  *
  * @param {float} distance - The distance to shift along this Path
- * @param {int} stepsPerMm - The amount of steps per millimeter to talke while walking the cubic Bezier curve
  * @return {Point} point - The point that lies distance along this Path
  */
-Path.prototype.shiftAlong = function (distance, stepsPerMm = 10) {
+Path.prototype.shiftAlong = function (distance) {
   distance = __asNumber(distance, 'distance', 'Path.shiftAlong', this.log)
   let len = 0
   let current
@@ -1002,8 +1001,7 @@ Path.prototype.shiftAlong = function (distance, stepsPerMm = 10) {
       )
       let thisLen = bezier.length()
       if (Math.abs(len + thisLen - distance) < 0.1) return op.to
-      if (len + thisLen > distance)
-        return __shiftAlongBezier(distance - len, bezier, thisLen * stepsPerMm)
+      if (len + thisLen > distance) return __shiftAlongBezier(distance - len, bezier)
       len += thisLen
     }
     current = op.to
@@ -1017,13 +1015,12 @@ Path.prototype.shiftAlong = function (distance, stepsPerMm = 10) {
  * Returns a point that lies at fraction along this Path
  *
  * @param {float} fraction - The fraction to shift along this Path
- * @param {int} stepsPerMm - The amount of steps per millimeter to talke while walking the cubic Bezier curve
  * @return {Point} point - The point that lies fraction along this Path
  */
-Path.prototype.shiftFractionAlong = function (fraction, stepsPerMm = 10) {
+Path.prototype.shiftFractionAlong = function (fraction) {
   if (typeof fraction !== 'number')
     this.log.error('Called `Path.shiftFractionAlong(fraction)` but `fraction` is not a number')
-  return this.shiftAlong(this.length() * fraction, stepsPerMm)
+  return this.shiftAlong(this.length() * fraction)
 }
 
 /**
@@ -1731,21 +1728,30 @@ function __pathOffset(path, distance, log) {
  * @private
  * @param {float} distance - The distance to shift along the cubic Bezier curve
  * @param {Bezier} bezier - The BezierJs instance
- * @param {int} steps - The numer of steps per mm to walk the Bezier with
+ * @param {int} steps - The number of steps per mm to walk the Bezier with
+ * @param {number} precision - The maximum error in mm
  * @return {Point} point - The point at distance along the cubic Bezier curve
  */
-function __shiftAlongBezier(distance, bezier, steps) {
-  let previous, next, t, thisLen
-  let len = 0
-  for (let i = 0; i <= steps; i++) {
-    t = i / steps
-    next = bezier.get(t)
-    next = new Point(next.x, next.y)
-    if (i > 0) {
-      thisLen = next.dist(previous)
-      if (len + thisLen > distance) return next
-      else len += thisLen
+function __shiftAlongBezier(distance, bezier, steps, precision = 0.001) {
+  // binary search along the bezier curve
+  let p = 0.5
+  let p_min = 0
+  let p_max = 1
+  for (let i = 0; i < 50; i++) {
+    let len_to_p = bezier.split(p).left.length()
+    if (Math.abs(len_to_p - distance) < precision) {
+      // we're close enough to the real point, so stop
+      // console.log("needed " + i + " iterations")
+      break
+    } else if (len_to_p > distance) {
+      // distance is in left half
+      p_max = p
+    } else if (len_to_p < distance) {
+      // distance is in right half
+      p_min = p
     }
-    previous = next
+    p = (p_min + p_max) / 2
   }
+  let pointAtP = bezier.get(p)
+  return new Point(pointAtP.x, pointAtP.y)
 }

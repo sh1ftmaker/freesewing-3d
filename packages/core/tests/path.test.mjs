@@ -831,12 +831,12 @@ describe('Path', () => {
     let halves = test.split(split)
     let curve = halves[0].ops.pop()
     expect(curve.type).to.equal('curve')
-    expect(round(curve.cp1.x)).to.equal(35.08)
+    expect(round(curve.cp1.x)).to.equal(35.07)
     expect(round(curve.cp1.y)).to.equal(21.64)
     expect(round(curve.cp2.x)).to.equal(46.18)
-    expect(round(curve.cp2.y)).to.equal(-14.67)
-    expect(round(curve.to.x)).to.equal(72.51)
-    expect(round(curve.to.y)).to.equal(8.69)
+    expect(round(curve.cp2.y)).to.equal(-14.66)
+    expect(round(curve.to.x)).to.equal(72.5)
+    expect(round(curve.to.y)).to.equal(8.67)
   })
 
   it('Should split a path on a line', () => {
