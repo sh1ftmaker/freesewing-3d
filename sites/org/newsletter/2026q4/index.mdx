@@ -1,0 +1,250 @@
+---
+date: '2026-10-01'
+edition: '2026q4'
+intro: 'Welcome to the 2026 Autumn edition of the FreeSewing newsletter.'
+title: '2026 Autumn edition'
+authors:
+  - 1
+toc_max_heading_level: 2
+---
+
+Welcome to the 2026 Autumn edition of the FreeSewing newsletter.
+
+Here is what's on the menu today:
+
+- 👚 Our Bella bodice block now comes with sleeves
+- 💬 Self-hosted chat and video conferencing for the FreeSewing community
+- 📷 Showcase uploads are coming back, but it's complicated
+- 🎨 Preview our new website before we flip the switch
+- 🗓️ So much for punctuality?
+- 🤖 This newsletter brought to you by the state of the internet
+
+Let's get started.
+
+&nbsp;
+
+&nbsp;
+
+## 👚 Our Bella bodice block now comes with sleeves
+
+Our [Bella block](https://freesewing.eu/designs/bella/) for womenswear is
+FreeSewing's second most popular design, with only
+[Simon](https://freesewing.eu/designs/simon) proving to be more popular.
+
+So it feels significant that it's now even better, after Jonathan added a
+sleeve to the design. That's right, up until recently, the design only
+provided the bodice block itself, with the sleeve left as _an exercise for the
+reader_ so to speak.
+
+The absence of a sleeve has not proven to be much of a hindrance to its surge
+in popularity, so we expect that this will only continue now that sleeves are
+included.
+
+&nbsp;
+
+&nbsp;
+
+## 💬 Self-hosted chat and video conferencing for the FreeSewing community
+
+Eighteen months ago, we announced that we had migrated our backend systems to
+Europe, our code repository to Codeberg, and launched [our
+forum](https://forum.freesewing.eu/) as an alternative to [our Discord
+server](https://discord.freesewing.eu/). All of this in an effort to, as we put
+it back then, [put some distance between our users and the new US
+administration](https://freesewing.eu/blog/us-and-eu).
+
+Obviously this moment was preceded by a bunch of work to make all this
+possible, and that work has continued ever since to deal with the _long tail_
+of things that also might need to be reconsidered.
+
+As mentioned, we had already put up our own self-hosted forum at this point to
+give people another outlet, which has been a nice addition. But it did not
+provide an alternative for real-time chat and video conferencing that were
+also provided by Discord.
+
+The video conferencing is particularly relevant because one of the remaining
+tasks on our todo list was to ensure that Discord was not load-bearing
+infrastructure for the FreeSewing community. Given that we hold [FreeSewing
+community calls](https://forum.freesewing.eu/c/hangout/4) every two weeks (feel
+free to drop by) and those were hosted on Discord, this means that people who
+wanted to partake in those calls did not have an alternative.
+
+So, over the summer, we've set up two new self-hosted services:
+
+- [chat.freesewing.eu](https://chat.freesewing.eu/) is our own real-time chat
+  server backed by Matrix
+- [meet.freesewing.eu](https://preview.freesewing.eu/hangout) is our own video
+  conferencing server backed by Jitsi
+
+This does not invalidate Discord -- or any other platform -- as a place for the
+FreeSewing community to congregate. We've always maintained that we consider
+any gathering of people under our banner to be part of our community. We just feel
+that when it comes to _official_ activity -- such as community calls -- we need
+to make sure those places cannot be policed by US-based tech companies.
+
+In other words, we're not in the business of telling people what to do. If you
+like Discord, by all means go for it. However, to clarify what you can expect
+where, here's the rule of thumb:
+
+- Things will remain how they are: Which is to say, platforms and popularity
+  change over time. Go where your friends are, or wherever feels right to you.
+- The community call will be (and has been for several weeks) hosted on our
+  own Jitsi instance. To join the call, please go [via this
+  page](https://preview.freesewing.eu/hangout) which allows you to sign in with
+  your FreeSewing credentials. (this is all so new that this page is only
+  available via the new site, see further below in this newsletter)
+- On [chat.freesewing.eu](https://chat.freesewing.eu/) you will find fewer
+  people (it's brand new and few people even know about it) but over time you
+  can expect that this will be the more authoritative source of real-time
+  communications. To put it differently, we don't expect Matrix to become more
+  popular than Discord overnight, but we do foresee it becoming more of the
+  nerve center of FreeSewing's inner workings.
+
+&nbsp;
+
+&nbsp;
+
+## 📷 Showcase uploads are coming back, but it's complicated
+
+Ever since our security audit in Q1 of this year, the ability to submit your
+own showcases has been nerfed.
+They are now back, but only on [the new version of our
+website](https://preview.freesewing.eu/) (more on that below) that we've been
+working on since ... checks notes ... the start of June.
+
+The reason this is all taking seemingly forever is that this showcase
+submission functionality is an awkward fit for our infrastructure.
+Specifically, we need to let people upload images which then need to be
+transferred to the hosting service, and we need to capture that input, turn
+that into the required `.mdx` files and folders to add the showcase to our
+repository, which means handling commits and creating a pull request
+programmatically.
+
+It's not that we cannot do that. But the issue is that the FreeSewing backend
+is first and foremost designed to handle the data of our users, and all of this
+_now go create a pull request_ functionality sits awkwardly in that codebase.
+
+Furthermore, this type of functionality is also subject to significantly more
+_churn_ than things like storing measurements or handling authentication.
+Migrate image hosting from Cloudflare to self-hosted? Now you need to adapt the
+code. Migrate the repository from Github to Codeberg? Now you need to adapt the
+code.
+
+Note that we also [publish our backend as a container
+image](https://hub.docker.com/r/freesewing/backend) for people who want to run
+their local instance of FreeSewing, so we feel a certain responsibility to keep
+that image sane, and not make it a convoluted mess that is tightly-coupled to
+our own website.
+
+All of this to say that we have decided to strip all of this functionality from
+our backend and instead look for a solution that is a better fit for our
+needs. A solution that (now) is right under our noses, because in our efforts
+to open up our infrastructure and allow more people to keep an eye on
+things, we have already set up
+[morio.freesewing.eu](https://morio.freesewing.eu/) which is our own
+[Morio](https://morio.it/) instance which provides
+observability of our infrastructure (in case you're curious about this
+choice, Morio is another open source project of mine, so I'm _dogfooding_ it.)
+
+So the new _upload your showcase here_ functionality is powered by Morio's
+event-driven automation service (EdA) which itself is an instance of
+[Node-RED](https://nodered.org/). This allows us to easily add specific
+automations without having to meddle with the codebase of our backend systems.
+
+Going forward, we expect Morio to solve more of these kinds of issues for us.
+In the meantime, you can still submit your showcases [on our
+forum](https://forum.freesewing.eu/c/showcase/14) or read on to learn about
+this new website we've been working on.
+
+&nbsp;
+
+&nbsp;
+
+## 🎨 Preview our new website before we flip the switch
+
+In June, we set out to port our website from Docusaurus to Vite, in an
+effort to make it easier for people to make contributions to our frontend code.
+
+That effort has since [ballooned a
+bit](https://codeberg.org/freesewing/freesewing/pulls/871) and with it its
+estimated end date has slipped.
+
+Originally the plan was to do this _during the summer_ with August 25th
+(FreeSewing's birthday) as a loosely penciled in release date. That obviously
+didn't happen, and so the end of the quarter -- coinciding with this newsletter
+-- was put up as a new target date.
+
+There was some debate about whether or not to release the new site today, but
+in the end, we decided against it, instead sticking to our time-honoured
+release schedule of _it will be ready when it's ready_. We _feel_ it is close
+to ready, bar a few sharp edges still left and right, but our main concern is
+the issues we aren't aware of yet.
+
+So if you are curious and want to have a look at what's in store, please do
+check it out, and let us know about any issues you can find. This way:
+[preview.freesewing.eu](https://preview.freesewing.eu/). Doing so would really
+help us out too.
+
+&nbsp;
+
+&nbsp;
+
+## 🗓️ So much for punctuality?
+
+When we started this newsletter, almost 6 years ago, we promised we
+would send you an email once every three months. We've kept that promise,
+but now we're struggling to respect the _timing_ aspect of that promise.
+
+You see, over those years, our little newsletter that we used to send to a
+handful of people has evolved into something a lot more unwieldy. It's still
+our little newsletter, but things have gotten _complicated_. Not only
+because we now have more than 70K subscribers, but also because we walked
+away from US-based tech companies, which exposes us to plenty of sharp edges.
+
+So last time we sent out the newsletter, Google (Gmail to be precise) felt we
+were _sending too much email_, and ended up dropping a lot of our email.
+
+For reasons that would require an extra 500 lines to explain, the most
+clear-cut way for us to sidestep this problem is to drip-feed the sending out
+of our newsletter emails, which means that you won't all be getting them on the
+same day.
+
+We trust you don't mind. And if you did not receive the previous edition of
+this newsletter, keep in mind that you can find all our previous newsletter
+editions at [freesewing.eu/newsletter](https://freesewing.eu/newsletter/).
+
+&nbsp;
+
+&nbsp;
+
+## 🤖 This newsletter brought to you by the state of the internet
+
+I sure am happy that Jonathan added that sleeve to Bella because if not, I
+would basically have had no _sewing_ content for this newsletter, and I
+suspect y'all like to read about that stuff more than about all the tech
+stuff.
+
+Trust me, I know. I has dawned on me recently that I have not made any clothes
+in more than 2 years, and I am rather sad about that.
+
+Unfortunately, the state of the internet today -- a toxic mix of tech companies
+working feverishly on the torment nexus, and a sea of ocean-boiling AI bots
+relentlessly trying to extract value from projects like ours -- means that merely
+defending FreeSewing and its users from the hellscape that is today's internet has
+all but taken over my life.
+
+Since this is the FreeSewing newsletter, I am writing about what is going on with
+FreeSewing. And the reality is that most of our time these days is spent
+on things that have nothing to do with sewing, or even patterns. It's all just
+pushing back against the deathmarch of end-stage capitalism and the grift of
+_just one more datacenter bro_.
+
+Yet I am not discouraged. If anything, I find great strength and joy in the
+fact that despite all this, FreeSewing can and does persist.
+
+It really is remarkable how far we've come, and I wanted to take a moment to
+thank all of you who have helped along the way.
+
+Let's keep going.
+
+joost
