@@ -712,6 +712,14 @@ export const body = {
       paths.sa = paths.allButDart.close().offset(sa).attr('class', 'fabric sa')
     }
 
+    store.flag.info({
+      msg: `hi:scale`,
+      replace: {
+        volume: (options.size * options.size * options.size * 30).toFixed(1),
+        minPoly: (options.size * options.size * options.size * 450).toFixed(),
+        maxPoly: (options.size * options.size * options.size * 900).toFixed(),
+      },
+    })
     return part
   },
 }
