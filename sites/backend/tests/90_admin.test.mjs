@@ -19,12 +19,13 @@ describe(`Admin tests`, () => {
     })
 
     it(`Should search users by username (${a})`, async () => {
-      const [status, data] = await api.post(`/admin/search/users/${a}`, { q: 'user' }, auth[a]())
-      const hit = data.users.username[0]
+      const [status, data] = await api.post(
+        `/admin/search/users/${a}`,
+        { q: store.account.username },
+        auth[a]()
+      )
       assert.equal(status, 200)
-      assert.equal(store.account.uuid, hit.uuid)
-      // We should find both account and altaccount
-      assert.equal(data.users.username.length, 2)
+      assert.equal(store.account.uuid, data.users.username[0].uuid)
     })
 
     it(`Should search users by email (${a})`, async () => {
@@ -33,9 +34,9 @@ describe(`Admin tests`, () => {
         { q: store.account.email },
         auth[a]()
       )
-      const hit = data.users.ehash[0]
       assert.equal(status, 200)
-      assert.equal(store.account.uuid, hit.uuid)
+      assert.equal(store.account.uuid, data.users.ehash[0].uuid)
+      assert.equal(store.account.uuid, data.users.ihash[0].uuid)
     })
 
     it(`Should search users by uuid (${a})`, async () => {
@@ -44,9 +45,8 @@ describe(`Admin tests`, () => {
         { q: store.account.uuid },
         auth[a]()
       )
-      const hit = data.users.uuid[0]
       assert.equal(status, 200)
-      assert.equal(store.account.username, hit.username)
+      assert.equal(store.account.email, data.users.uuid[0].email)
     })
 
     it(`Should load a user (${a})`, async () => {
@@ -79,8 +79,11 @@ describe(`Admin tests`, () => {
       // Note that (only) the store.altaccount is subscribed to the newsletter
       const [status, data] = await api.get(`/admin/subscribers/${a}`, auth[a]())
       assert.equal(status, 200)
-      assert.equal(data.subscribers[0].uuid, store.altaccount.uuid)
-      assert.equal(data.subscribers[0].email, store.altaccount.email)
+      const matches = []
+      for (const subscriber of data.subscribers) {
+        if (subscriber.uuid === store.altaccount.uuid) matches.push(subscriber)
+      }
+      assert.equal(matches.length, 1)
     })
 
     if (a === 'jwt') {

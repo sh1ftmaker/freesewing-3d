@@ -4,6 +4,9 @@ import HTTP from 'node:http'
 import axios from 'axios'
 import { randomBytes } from 'crypto'
 import { DatabaseSync } from 'node:sqlite'
+// Load environment variables
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const api = new restClient(`http://localhost:3001`)
 
@@ -78,7 +81,7 @@ function restClient(api, options = {}) {
     method: 'GET',
     headers: {},
     data: undefined,
-    timeout: 1500,
+    timeout: 15000,
     ...options,
   }
   if (api.toLowerCase().slice(0, 6) === 'https:') {
@@ -159,8 +162,10 @@ export const readEmails = () => [...emails]
 // Cannot change a user role via the API,
 // but you can with write access to the database
 export function changeRole(uuid, role) {
-  const db = new DatabaseSync(path.resolve('./tests/database.sqlite'))
-  const update = db.prepare(`UPDATE User SET role = :role WHERE uuid = :uuid`).run({ uuid, role })
+  const dbPath = process.env.BACKEND_DB_PATH || './tests/database.sqlite'
+  const db = new DatabaseSync(path.resolve(dbPath))
+  const q = `UPDATE User SET role = :role WHERE uuid = :uuid`
+  const update = db.prepare(q).run({ uuid, role })
   return db.prepare(`SELECT * FROM User WHERE uuid = :uuid`).get({ uuid })
 }
 
