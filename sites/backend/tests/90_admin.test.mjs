@@ -65,6 +65,16 @@ describe(`Admin tests`, () => {
       assert.equal(-2, data.user.status)
     })
 
+    it(`Should change the role of a user account (${a})`, async () => {
+      const [status, data] = await api.patch(
+        `/admin/user/${store.altaccount.uuid}/${a}`,
+        { role: 'tester' },
+        auth[a]()
+      )
+      assert.equal(status, 200)
+      assert.equal('tester', data.user.role)
+    })
+
     it(`Should load update a user (change username back to original) (${a})`, async () => {
       const [status, data] = await api.patch(
         `/admin/user/${store.altaccount.uuid}/${a}`,

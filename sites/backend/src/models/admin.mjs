@@ -135,6 +135,18 @@ AdminModel.prototype.updateUser = async function ({ params, body, user }) {
   }
 
   /*
+   * Update role?
+   * Note that only admins can do this
+   */
+  if (
+    typeof body.role !== 'undefined' &&
+    Object.keys(this.config.roles.levels).includes(body.role)
+  ) {
+    if (!this.rbac.admin(user)) return this.setResponse(403, 'insufficientAccessLevel')
+    else data.role = body.role
+  }
+
+  /*
    * Now update the database record
    */
   await this.User.update(data)
