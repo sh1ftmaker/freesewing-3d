@@ -81,8 +81,8 @@ AdminModel.prototype.loadUser = async function ({ params, user }) {
  * Updates the user data
  * This only handles things that the user cannot update themselves
  * (like role and so on)
- * For all other updates, admins should impersonate the user and then
- * update as a regular user would.
+ * For all other updates, admins/support should impersonate the user
+ * and then update as a regular user would.
  *
  * @param {body} object - The request body
  * @param {params} object - The (URL) request parameters.
@@ -93,7 +93,7 @@ AdminModel.prototype.updateUser = async function ({ params, body, user }) {
   /*
    * Enforce RBAC
    */
-  if (!this.rbac.admin(user)) return this.setResponse(403, 'insufficientAccessLevel')
+  if (!this.rbac.support(user)) return this.setResponse(403, 'insufficientAccessLevel')
 
   /*
    * Is id set?
