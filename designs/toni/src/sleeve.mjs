@@ -7,7 +7,9 @@ import * as shared from './utils.mjs'
 export const sleeveMenuEnabled =
   (menu = 'style') =>
   (settings, mergedOptions) =>
-    mergedOptions?.construction === 'set-in' || mergedOptions.style === 'raglan' ? menu : false
+    mergedOptions?.construction === 'set-in' || mergedOptions?.construction === 'raglan'
+      ? menu
+      : false
 export const sleeveMenuEnabledAdvanced = sleeveMenuEnabled('advanced.style.sleevecap')
 
 export const sleeve = {
