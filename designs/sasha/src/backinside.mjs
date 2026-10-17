@@ -10,6 +10,7 @@ export const backInside = {
     dartPosition: 'armhole', // only support armhole as princess seam endpoint
     armholeDartPositionBackOffset: { pct: 0, min: -100, max: 100, menu: 'advanced' },
     backHemSlope: 0, // ensures that the back part gets a straight side seam
+    shoulderSlopeBack: 1, // same slope back and front to ensure same seam length (no easing in)
   },
   draft: ({ sa, store, points, Path, paths, options, macro, part }) => {
     // hide the paths(s) inherited from nobleBackPoints
@@ -43,9 +44,11 @@ export const backInside = {
       .move(points.dartBottomLeft)
       .curve(points.dartLeftCp, points.shoulderDartCpDown, points.dartTip)
 
+    // account for adjusted neckline
+    points.neckShoulder = points.hps.shiftTowards(points.shoulder, store.get('neckShift'))
     const nobleRest = new Path()
       .move(points.shoulder)
-      .line(points.hps)
+      .line(points.neckShoulder)
       ._curve(points.cbNeckCp1, points.cbNeck)
 
     // skirt portion consists of a rectangle and a 'godet' (but as one piece)
@@ -120,23 +123,17 @@ export const backInside = {
     })
     macro('hd', {
       from: points.cbNeck,
-      to: points.hps,
-      y: points.hps.y - sa - 15,
-      id: 'neckToHps',
-    })
-    macro('hd', {
-      from: points.hps,
-      to: points.shoulderPoint,
-      y: points.hps.y - sa - 15,
-      id: 'hpsToShoulder',
+      to: points.neckShoulder,
+      y: points.neckShoulder.y - sa - 15,
+      id: 'neckToCb',
     })
 
     let extraOffset = 0
     if (options.dartPosition != 'shoulder') {
       macro('vd', {
-        from: points.shoulderPoint,
+        from: points.neckShoulder,
         to: points.armholeSplit,
-        x: points.shoulderPoint.x + sa + 15,
+        x: points.neckShoulder.x + sa + 15,
         id: 'splitToShoulder',
       })
       extraOffset = 10
@@ -145,19 +142,19 @@ export const backInside = {
     macro('vd', {
       from: points.armholeSplit,
       to: points.dartTip,
-      x: points.shoulderPoint.x + sa + 15,
+      x: points.neckShoulder.x + sa + 15,
       id: 'dartPointToSplit',
     })
     macro('vd', {
-      from: points.shoulderPoint,
+      from: points.neckShoulder,
       to: points.dartTip,
-      x: points.shoulderPoint.x + sa + 25 + extraOffset,
+      x: points.neckShoulder.x + sa + 25 + extraOffset,
       id: 'dartToShoulder',
     })
     macro('vd', {
       from: points.dartTip,
       to: points.dartBottomLeft,
-      x: points.shoulderPoint.x + sa + 15,
+      x: points.neckShoulder.x + sa + 15,
       id: 'dartPointToWaist',
     })
     macro('hd', {
@@ -180,9 +177,9 @@ export const backInside = {
     })
     macro('vd', {
       from: points.cbSkirtHem,
-      to: points.hps,
+      to: points.neckShoulder,
       x: points.cbNeck.x - sa - 25,
-      id: 'hemToHps',
+      id: 'hemToNeckline',
     })
     macro('hd', {
       from: points.cbSkirtHem,

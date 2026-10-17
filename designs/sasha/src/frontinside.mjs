@@ -53,6 +53,8 @@ export const frontInside = {
       points.shoulderDartInside,
       options.necklineWidth
     )
+    // maintain any delta between front/back seam lengths by converting options.necklineWidth to a length
+    store.set('neckShift', points.hps.dist(points.neckShoulder))
     points.neckCorner = utils.beamsIntersect(
       points.neckBottom,
       points.neckBottom.shift(0, 20),
