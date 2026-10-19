@@ -12,6 +12,9 @@ export const backOutside = {
 
     if (options.dartPosition !== 'shoulder') {
       paths.armhole = paths.armhole.split(points.shoulderDart)[0]
+      store.set('library.sleeve.backArmholeToArmholePitch', paths.armhole.length())
+    } else {
+      snippets.armholePitchNotch = new Snippet('notch', points.armholePitch)
     }
     paths.outsideSeam = new Path()
       .move(points.dartBottomRight)

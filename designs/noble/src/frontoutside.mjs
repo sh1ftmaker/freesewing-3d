@@ -32,6 +32,8 @@ export const frontOutside = {
         .join(paths.princessSeam)
         .close()
         .attr('class', 'fabric')
+
+      snippets.armholePitchNotch = new Snippet('notch', points.armholePitch)
     } else {
       if (options.armholeDartCurved) {
         paths.princessSeam = new Path()
@@ -73,7 +75,9 @@ export const frontOutside = {
           .close()
           .attr('class', 'fabric')
       }
+      store.set('library.sleeve.frontArmholeToArmholePitch', paths.armholeOutside.length())
     }
+    store.set('library.sleeve.title', { nr: 5 })
 
     points.grainTop = points.armhole.shift(225, 20)
     points.grainBottom = points.sideHemInitial.shift(135, 20)

@@ -9,7 +9,8 @@
     "front": "Front",
     "frontInside": "Front inside",
     "frontOutside": "Front outside",
-    "frontPoints": "Front base"
+    "frontPoints": "Front base",
+    "sleeve": "Sleeve"
   },
   "s": {},
   "o": {
@@ -132,6 +133,10 @@
     "fullChestEaseReduction": {
       "t": "Full chest ease reduction",
       "d": "Allows you to independently reduce the ease around the chest to make it fit tight(er) in that area"
+    },
+    "nobleSleeve": {
+      "t": "Sleeve",
+      "d": "Add sleeves to the garment"
     }
   }
 }

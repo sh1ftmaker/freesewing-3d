@@ -7,11 +7,12 @@ import { backOutside } from './backoutside.mjs'
 import { frontPoints } from './frontpoints.mjs'
 import { frontInside } from './frontinside.mjs'
 import { frontOutside } from './frontoutside.mjs'
+import { sleeve } from './sleeve.mjs'
 
 // Setup our new design
 const Noble = new Design({
   data: about,
-  parts: [backPoints, backInside, backOutside, frontPoints, frontInside, frontOutside],
+  parts: [backPoints, backInside, backOutside, frontPoints, frontInside, frontOutside, sleeve],
 })
 
 // Named exports
@@ -22,6 +23,7 @@ export {
   frontPoints,
   frontInside,
   frontOutside,
+  sleeve,
   Noble,
   i18n,
   about,
