@@ -56,7 +56,7 @@ export function draftCurvedWaistband({
    * Annotations
    */
   // Cutlist
-  store.cutlist.setCut({ cut: 1, from: 'fabric' })
+  store.cutlist.setCut({ cut: 2, from: 'fabric' })
 
   // Anchor samples to the centre of the waist
   points.gridAnchor = points.in1.clone()
