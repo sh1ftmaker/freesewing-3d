@@ -90,7 +90,7 @@ export const back = {
     )
     store.set('SnapPlacketWidth', points.p6.dist(points.p7))
 
-    store.cutlist.addCut({ material: 'fabric', cut: 1 })
+    store.cutlist.addCut({ from: 'fabric', cut: 1 })
 
     points.logo = points.p0.shiftFractionTowards(points.p3, 0.5)
     snippets.logo = new Snippet('logo', points.logo)

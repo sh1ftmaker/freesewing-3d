@@ -46,7 +46,7 @@ export const longsleeve = {
       to: points.p1,
     })
 
-    // store.cutlist.addCut({ material: 'fabric', cut: 2 })
+    // store.cutlist.addCut({ from: 'fabric', cut: 2 })
 
     points.logo = points.p0.shiftFractionTowards(points.p2, 0.5)
     snippets.logo = new Snippet('logo', points.logo)

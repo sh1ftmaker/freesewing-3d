@@ -61,7 +61,7 @@ function draftCarltonChestPocketBag({
    */
 
   // Cut list
-  store.cutlist.addCut({ material: 'lining' })
+  store.cutlist.addCut({ from: 'lining' })
 
   // Title
   points.title = points.topLeft.shiftFractionTowards(points.bottomRight, 0.2)

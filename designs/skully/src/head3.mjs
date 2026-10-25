@@ -98,7 +98,7 @@ export const head3 = {
       .join(paths.bottom)
       .close()
 
-    store.cutlist.addCut({ cut: 2, from: 'Fabric' })
+    store.cutlist.addCut({ cut: 2, from: 'fabric' })
 
     points.title = points.point4
       .shiftFractionTowards(points.point1, 0.25)

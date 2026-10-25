@@ -84,7 +84,7 @@ export const front = {
       to: points.p0,
     })
 
-    store.cutlist.addCut({ material: 'fabric', cut: 1 })
+    store.cutlist.addCut({ from: 'fabric', cut: 1 })
 
     points.logo = points.p0.shiftFractionTowards(points.p3, 0.5)
     snippets.logo = new Snippet('logo', points.logo)

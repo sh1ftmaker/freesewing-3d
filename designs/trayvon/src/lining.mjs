@@ -33,7 +33,7 @@ function trayvonLiningTail(params) {
    * Annotations
    */
   // Cutlist
-  store.cutlist.addCut({ cut: 1, material: 'lining' })
+  store.cutlist.addCut({ cut: 1, from: 'lining' })
 
   // Title
   macro('title', {
@@ -79,7 +79,7 @@ function trayvonLiningTip(params) {
    * Annotations
    */
   // Cutlist
-  store.cutlist.addCut({ cut: 1, material: 'lining' })
+  store.cutlist.addCut({ cut: 1, from: 'lining' })
 
   // Title
   macro('title', {

@@ -139,7 +139,7 @@ export const sidePanel = {
       .attr('class', 'fabric')
 
     store.cutlist.addCut({ cut: 2, from: 'fabric' })
-    store.cutlist.addCut({ cut: 2, material: 'lining' })
+    store.cutlist.addCut({ cut: 2, from: 'lining' })
 
     if (options.size > 0.4) {
       points.logo = points.topMiddle.shiftFractionTowards(points.bottomMiddle, 0.4)

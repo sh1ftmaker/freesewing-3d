@@ -25,7 +25,7 @@ function draftBenjaminBow3({ options, Point, points, Path, paths, macro, sa, sto
   // Cutlist
   store.cutlist.addCut([
     { cut: 1, from: 'fabric' },
-    { cut: 1, material: 'interfacing' },
+    { cut: 1, from: 'interfacing' },
   ])
 
   // Grainline

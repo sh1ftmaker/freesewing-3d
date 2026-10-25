@@ -66,7 +66,7 @@ export const topOfFin = {
         .length()
     )
 
-    store.cutlist.addCut({ cut: 2, material: 'color1UpperBody' })
+    store.cutlist.addCut({ cut: 2, from: 'hi:color1UpperBody' })
 
     paths.body = new Path()
       .move(points.topOfFin01)

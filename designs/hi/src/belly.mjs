@@ -186,7 +186,7 @@ export const belly = {
       to: points.grainlineTo,
     })
 
-    store.cutlist.addCut({ cut: 1, material: 'color2Belly' })
+    store.cutlist.addCut({ cut: 1, from: 'hi:color2Belly' })
 
     points.titleAnchor = points.belly05.shiftFractionTowards(points.belly10, 0.5)
     points.logoAnchor = points.belly10.shiftFractionTowards(points.titleAnchor, 0.5)

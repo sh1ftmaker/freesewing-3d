@@ -72,7 +72,7 @@ export const tail = {
       .curve(points.tail05cp1, points.tail01cp2, points.tail01)
       .close()
 
-    store.cutlist.addCut({ material: 'color1UpperBody' })
+    store.cutlist.addCut({ from: 'hi:color1UpperBody' })
 
     points.tailSnippet = new Path()
       .move(points.tail01)

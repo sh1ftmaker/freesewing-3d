@@ -36,7 +36,7 @@ function draftCarltonInnerPocketTab({
    */
 
   // Cut list
-  store.cutlist.addCut({ cut: 1, material: 'lining' })
+  store.cutlist.addCut({ cut: 1, from: 'lining' })
 
   // Title
   points.title = points.top.shiftFractionTowards(points.bottom, 0.5)

@@ -13,6 +13,10 @@
     "upperTeeth": "Upper teeth"
   },
   "s": {
+    "color1UpperBody": "color 1 (upper body)",
+    "color2Belly": "color 2 (belly)",
+    "color3Mouth": "color 3 (mouth)",
+    "color4Teeth": "color 4 (teeth)",
     "scale.t": "Stuffing",
     "scale.d": "Your shark will need about {{volume}} liters of stuffing. When using polyfill, we estimate you'll need between {{minPoly}} grams (soft and squishy, matching Blåhaj) and {{maxPoly}} grams (rigid and firm)."
   },

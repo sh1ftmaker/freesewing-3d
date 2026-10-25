@@ -11,7 +11,7 @@ function trayvonInterfacingTail(params) {
    * Annotations
    */
   // Cutlist
-  store.cutlist.addCut({ cut: 1, material: 'interfacing' })
+  store.cutlist.addCut({ cut: 1, from: 'interfacing' })
 
   // Title
   macro('title', {
@@ -44,7 +44,7 @@ function trayvonInterfacingTip(params) {
    * Annotations
    */
   // Cutlist
-  store.cutlist.addCut({ cut: 1, material: 'interfacing' })
+  store.cutlist.addCut({ cut: 1, from: 'interfacing' })
 
   // Title
   macro('title', {

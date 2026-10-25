@@ -3908,7 +3908,10 @@ export const designs = {
       "topOfFin": "Top of fin",
       "upperTeeth": "Upper teeth"
     },
-    "s": {},
+    "s": {
+      "scale.t": "Stuffing",
+      "scale.d": "Your shark will need about {{volume}} liters of stuffing. When using polyfill, we estimate you'll need between {{minPoly}} grams (soft and squishy, matching Blåhaj) and {{maxPoly}} grams (rigid and firm)."
+    },
     "o": {
       "hungry": {
         "t": "Hungry",

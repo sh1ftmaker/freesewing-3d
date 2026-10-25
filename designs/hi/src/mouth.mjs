@@ -63,7 +63,7 @@ export const mouth = {
         .length()
     )
 
-    store.cutlist.addCut({ cut: 1, material: 'color3Mouth' })
+    store.cutlist.addCut({ cut: 1, from: 'hi:color3Mouth' })
 
     points.mouthUpperTeeth1 = new Path()
       .move(points.mouth01)

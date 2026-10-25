@@ -48,7 +48,7 @@ export const lowerTeeth = {
       part
     )
 
-    store.cutlist.addCut({ cut: 1, material: 'color4Teeth' })
+    store.cutlist.addCut({ cut: 1, from: 'hi:color4Teeth' })
 
     snippets.lowerTeeth = new Snippet('bnotch', points.lowerTeeth01)
 

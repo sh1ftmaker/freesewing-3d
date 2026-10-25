@@ -45,7 +45,7 @@ function trayvonFabricLoop({ points, Point, paths, Path, store, macro, expand, u
    * Annotations
    */
   // Cutlist
-  store.cutlist.addCut({ cut: 1, material: 'lining' })
+  store.cutlist.addCut({ cut: 1, from: 'lining' })
 
   // Title
   points.title = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)

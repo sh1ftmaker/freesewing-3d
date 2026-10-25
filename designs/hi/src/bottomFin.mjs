@@ -86,7 +86,7 @@ export const bottomOfFin = {
       .curve(points.bottomOfFin03cp1, points.bottomOfFin01cp2, points.bottomOfFin01)
       .close()
 
-    store.cutlist.addCut({ cut: 2, material: 'color1UpperBody' })
+    store.cutlist.addCut({ cut: 2, from: 'hi:color1UpperBody' })
 
     const finAttachment = new Path()
       .move(points.bottomOfFin01)

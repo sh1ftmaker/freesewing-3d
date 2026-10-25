@@ -438,7 +438,7 @@ export const body = {
       to: points.body03,
     })
 
-    store.cutlist.addCut({ cut: 2, material: 'color1UpperBody' })
+    store.cutlist.addCut({ cut: 2, from: 'hi:color1UpperBody' })
 
     points.bodyTailSnippet = new Path()
       .move(points.body13)

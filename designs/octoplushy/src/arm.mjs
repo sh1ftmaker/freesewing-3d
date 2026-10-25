@@ -219,9 +219,9 @@ function octoplushyArmSection(
   })
 
   if (partNumber == 1) {
-    store.cutlist.addCut({ cut: 2, from: 'undersideFabric', identical: true })
+    store.cutlist.addCut({ cut: 2, from: 'octoplushy:undersideFabric', identical: true })
   } else {
-    store.cutlist.addCut({ cut: 8, from: 'undersideFabric', identical: true })
+    store.cutlist.addCut({ cut: 8, from: 'octoplushy:undersideFabric', identical: true })
   }
 
   for (var i = 0; i < 4; i++) {

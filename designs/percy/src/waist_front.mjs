@@ -173,7 +173,7 @@ function draftPercyWaistFront({
   }
 
   store.cutlist.addCut()
-  store.cutlist.addCut({ cut: 1, material: 'interfacing' })
+  store.cutlist.addCut({ cut: 1, from: 'interfacing' })
 
   points.titleAnchor = points.topCenter.shiftFractionTowards(points.bottomLeft, 0.5)
 

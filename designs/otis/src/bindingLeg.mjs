@@ -89,7 +89,7 @@ export const bindingLeg = {
       .line(points.p2.shiftFractionTowards(points.p1, 0.5))
       .addClass('dashed')
 
-    store.cutlist.addCut({ material: 'fabric', cut: 2 })
+    store.cutlist.addCut({ from: 'fabric', cut: 2 })
 
     points.logo = points.p0.shiftFractionTowards(points.p2, 0.5)
     snippets.logo = new Snippet('logo', points.logo).attr('data-scale', 0.25)

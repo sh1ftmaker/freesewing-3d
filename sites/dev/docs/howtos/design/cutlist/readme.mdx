@@ -17,6 +17,7 @@ part's title.
 :::
 
 :::note
+
 <details>
 <summary>addCut() Parameters</summary>
 
@@ -73,7 +74,7 @@ const part = {
   name: 'example.front',
   draft: ({ part, store }) => {
     // add instructions to cut three identical from lining
-    store.cutlist.addCut({ cut: 3, material: 'lining', identical: true })
+    store.cutlist.addCut({ cut: 3, from: 'lining', identical: true })
   },
 }
 ```
@@ -89,7 +90,7 @@ const part = {
     // add instructions to cut four mirrored from main fabric
     store.cutlist.addCut({ cut: 4 })
     // add instructions to cut three identical from lining
-    store.cutlist.addCut({ cut: 3, material: 'lining', identical: true })
+    store.cutlist.addCut({ cut: 3, from: 'lining', identical: true })
   },
 }
 ```

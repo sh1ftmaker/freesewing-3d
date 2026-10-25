@@ -75,7 +75,7 @@ export const aboveMouth = {
     store.set('aboveMouthBottomLength', paths.bellyAndMouthAttachment.length())
     store.set('aboveMouthFinLength', points.aboveMouth02.dist(points.aboveMouth03))
 
-    store.cutlist.addCut({ cut: 2, material: 'color2Belly' })
+    store.cutlist.addCut({ cut: 2, from: 'hi:color2Belly' })
     points.gridAnchor = points.aboveMouth04.clone()
 
     points.aboveMouthSnippet = new Path()

@@ -62,7 +62,7 @@ export const bottomPanel = {
       .attr('class', 'fabric')
 
     store.cutlist.addCut({ cut: 1, from: 'fabric' })
-    store.cutlist.addCut({ cut: 1, material: 'lining' })
+    store.cutlist.addCut({ cut: 1, from: 'lining' })
 
     points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     snippets.logo = new Snippet('logo', points.logo)
