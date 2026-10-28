@@ -181,12 +181,16 @@ const basePlugin = ({
       // draft the part
       pattern.draftPartForSet(partName, pattern.activeSet)
 
-      // if the pattern size is supposed to be re-set to the full width and height of all pages, do that
+      // Update the pattern width and height to the number of sheets per size of sheet.
+      // Otherwise, parts extending in the negative region will increase the pattern width/height
+      // without spawning additional pages, causing misalignment later.
+      // See: https://codeberg.org/freesewing/freesewing/issues/938
+      // Instead, we only treat positive areas as available space for pattern and pages.
       const generatedPageData = pattern.setStores[pattern.activeSet].get(partName)
       if (setPatternSize === true || setPatternSize === 'width')
-        pattern.width = Math.max(pattern.width, sheetWidth * generatedPageData.cols)
+        pattern.width = sheetWidth * generatedPageData.cols
       if (setPatternSize === true || setPatternSize === 'height')
-        pattern.height = Math.max(pattern.height, sheetHeight * generatedPageData.rows)
+        pattern.height = sheetHeight * generatedPageData.rows
 
       removeFromOnly(pattern, partName)
     },
