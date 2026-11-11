@@ -28,7 +28,7 @@ function parseTransform(list) {
 const apply = (m, x, y) => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]]
 
 // ---------- path -> polylines
-function polylines(ops, steps = 20) {
+export function polylines(ops, steps = 20) {
   const out = []
   let cur = null, start = null, closed = false
   const flush = () => { if (cur && cur.length > 1) out.push({ pts: cur, closed }); }
@@ -59,10 +59,10 @@ function lineStyle(cls) {
   for (const c of cls.split(' ')) if (CLASS_COLOR[c]) return { color: CLASS_COLOR[c], dashed: /\b(sa|help|note|mark|lining|interfacing|canvas)\b/.test(cls) }
   return { color: 0xcccccc, dashed: false }
 }
-const hue = (s) => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return h }
+export const hue = (s) => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return h }
 
 // midpoint-subdivide a non-indexed triangle list
-function subdivide(tris, levels) {
+export function subdivide(tris, levels) {
   for (let l = 0; l < levels; l++) {
     const out = []
     for (let i = 0; i < tris.length; i += 6) {
@@ -75,8 +75,7 @@ function subdivide(tris, levels) {
   return tris
 }
 
-function pickOutline(part) {
-  const candidates = ['sa', 'seam']
+export function pickOutline(part, candidates = ['sa', 'seam']) {
   for (const n of candidates) {
     const p = part.paths.find((x) => x.name === n && !x.hidden)
     if (p) { const pl = polylines(p.ops).find((l) => l.closed); if (pl) return pl.pts }

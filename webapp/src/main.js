@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { buildScene } from './scene.js'
+import { assemble } from './assembly.js'
 
 const $ = (id) => document.getElementById(id)
 const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' })
@@ -73,6 +74,17 @@ let busy = false, again = false
 function show() {
   if (!current) return
   if (group) { scene.remove(group); group.traverse((o) => { o.geometry?.dispose(); o.material?.dispose?.() }) }
+  if ($('view3d').value === 'assembled') {
+    const a = assemble(current)
+    if (!a) {
+      $('status').textContent = 'Assembled view needs front + back parts — not available for this design. Showing flat layout.'
+    } else {
+      group = a.group
+      scene.add(group)
+      $('status').textContent = `Assembled (approximate)${a.unplaced.length ? ' · not placed: ' + a.unplaced.join(', ') : ''}`
+      return
+    }
+  }
   group = buildScene(current, {
     explode: +$('explode').value,
     thickness: +$('thick').value,
@@ -85,6 +97,13 @@ function show() {
 
 function frame() {
   if (!current) return
+  if (group && $('view3d').value === 'assembled') {
+    const box = new THREE.Box3().setFromObject(group), c = box.getCenter(new THREE.Vector3()), d = box.getSize(new THREE.Vector3()).length()
+    controls.target.copy(c)
+    camera.position.set(c.x + d * 0.35, c.y - d * 1.0, c.z + d * 0.3)
+    controls.update()
+    return
+  }
   const cx = current.width / 2, cy = -current.height / 2
   controls.target.set(cx, cy, 0)
   const d = Math.max(current.width, current.height * 1.3)
@@ -211,6 +230,8 @@ async function init() {
   $('model').value = models.includes('cisFemaleAdult36') ? 'cisFemaleAdult36' : models[0]
   for (const [k, id] of [['explode', 'explode'], ['drape', 'drape'], ['thick', 'thick']]) if (q.has(k)) $(id).value = q.get(k)
   if (q.get('points')) $('points').checked = true
+  if (q.get('view')) $('view3d').value = q.get('view')
+  $('view3d').onchange = () => { show(); frame() }
   $('design').onchange = loadDesign
   $('model').onchange = async () => { await renderMeasurements(); redraw() }
   $('mreset').onclick = async () => { await renderMeasurements(); redraw() }
