@@ -1,3 +1,5 @@
+> **Unofficial fork / derivative work.** This repository is an independent project that is **not affiliated with, endorsed by, or sponsored by FreeSewing or its maintainers**. It contains a copy of the FreeSewing source code (https://codeberg.org/freesewing/freesewing, MIT licensed, copyright Joost De Cock and the FreeSewing contributors) plus an added browser web app in [`webapp/`](webapp/). All patterns, designs and the core library are the work of the FreeSewing community. Please support the original project at https://freesewing.org and report any problems with the original code upstream. "FreeSewing" is the name of the original project; its use here is purely descriptive.
+
 <p align='center'><a
 href="https://www.npmjs.com/package/@freesewing/core"
 title="@freesewing/core on NPM"
