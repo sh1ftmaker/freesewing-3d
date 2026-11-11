@@ -67,6 +67,7 @@ let current = null // result from worker
 let group = null
 let hiddenParts = new Set()
 let options = {}
+let overrides = {}, baseValues = {}, designInfo = null
 let busy = false, again = false
 
 function show() {
@@ -98,7 +99,7 @@ async function redraw(reframe = false) {
   try {
     const { result } = await call({
       type: 'draft', design: $('design').value, model: $('model').value,
-      sa: $('sa').checked, complete: $('complete').checked, options,
+      sa: $('sa').checked, complete: $('complete').checked, options, overrides,
     })
     current = result
     const errs = [...result.logs.error, ...result.logs.warn]
@@ -122,6 +123,39 @@ function renderPartsList() {
     const c = Object.assign(document.createElement('input'), { type: 'checkbox', checked: !hiddenParts.has(st.name) })
     c.onchange = () => { c.checked ? hiddenParts.delete(st.name) : hiddenParts.add(st.name); show() }
     l.append(st.name, c)
+    box.append(l)
+  }
+}
+
+async function renderMeasurements() {
+  const box = $('meas')
+  box.innerHTML = ''
+  overrides = {}
+  if (!designInfo) return
+  baseValues = (await call({ type: 'model', model: $('model').value })).values
+  const deg = new Set(designInfo.degrees || [])
+  const req = new Set(designInfo.required || [])
+  for (const name of designInfo.measurements) {
+    const base = baseValues[name]
+    if (typeof base !== 'number') continue
+    const isDeg = deg.has(name)
+    const l = document.createElement('label')
+    const t = document.createElement('span'); t.textContent = name + (req.has(name) ? '' : ' (opt)'); l.append(t)
+    const r = Object.assign(document.createElement('input'), {
+      type: 'range', min: isDeg ? 0 : Math.round(base * 0.5), max: isDeg ? 90 : Math.round(base * 1.6),
+      step: isDeg ? 0.5 : 1, value: base,
+    })
+    const n = Object.assign(document.createElement('input'), { type: 'number', step: isDeg ? 0.5 : 1, value: +base.toFixed(1) })
+    const set = (v) => {
+      if (!(v > 0)) return
+      r.value = n.value = v
+      overrides[name] = v
+      t.classList.toggle('ov', Math.abs(v - base) > 1e-6)
+      redraw()
+    }
+    r.oninput = () => set(+r.value)
+    n.onchange = () => set(+n.value)
+    l.append(r, n)
     box.append(l)
   }
 }
@@ -157,8 +191,10 @@ async function loadDesign() {
   $('status').textContent = 'Loading design…'
   try {
     const { info } = await call({ type: 'info', design: $('design').value })
+    designInfo = info
     renderOptions(info)
-  } catch { $('options').innerHTML = '' }
+    await renderMeasurements()
+  } catch { $('options').innerHTML = ''; $('meas').innerHTML = '' }
   await redraw(true)
   if (current) renderPartsList()
 }
@@ -173,7 +209,8 @@ async function init() {
   for (const [k, id] of [['explode', 'explode'], ['drape', 'drape'], ['thick', 'thick']]) if (q.has(k)) $(id).value = q.get(k)
   if (q.get('points')) $('points').checked = true
   $('design').onchange = loadDesign
-  $('model').onchange = () => redraw()
+  $('model').onchange = async () => { await renderMeasurements(); redraw() }
+  $('mreset').onclick = async () => { await renderMeasurements(); redraw() }
   for (const id of ['sa', 'complete']) $(id).onchange = () => redraw()
   for (const id of ['explode', 'thick', 'drape', 'points']) $(id).oninput = show
   loadDesign()

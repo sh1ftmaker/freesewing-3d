@@ -19,3 +19,9 @@ input[type=range]{width:130px}
 #options input[type=range]{width:100px;flex:none}
 #options select{max-width:100px}
 .credit{font-size:11px;color:var(--mut);margin-top:18px}.credit a{color:var(--acc)}
+#mreset{float:right;background:none;border:1px solid #2f3742;color:var(--mut);border-radius:4px;font-size:11px;cursor:pointer}
+#meas label{font-size:12px}#meas input[type=range]{width:90px;flex:none}
+#meas input[type=number]{width:62px}#meas .ov{color:var(--acc)}
+#meas label{display:grid;grid-template-columns:1fr 80px 58px;gap:6px}
+#meas input[type=range]{width:80px}#meas input[type=number]{width:58px;max-width:58px}
+#meas label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

@@ -1,5 +1,6 @@
 // Runs FreeSewing (the cloned monorepo sources) off the main thread.
 import * as models from '@freesewing/models'
+import { degreeMeasurements } from '@freesewing/config'
 
 const loaders = import.meta.glob('../../designs/*/src/index.mjs')
 const names = Object.keys(loaders)
@@ -46,13 +47,19 @@ self.onmessage = async ({ data }) => {
       self.postMessage({ id, designs: names, models: modelNames })
       return
     }
+    if (type === 'model') {
+      self.postMessage({ id, values: clean(models[data.model]) })
+      return
+    }
     if (type === 'info') {
       const { Cls } = await getDesign(data.design)
       const cfg = new Cls().getConfig?.() || {}
       self.postMessage({ id, info: clean({
         parts: cfg.parts ? Object.keys(cfg.parts) : [],
         options: cfg.options || {},
-        measurements: cfg.measurements || [],
+        measurements: [...(cfg.measurements || []), ...(cfg.optionalMeasurements || [])],
+        required: cfg.measurements || [],
+        degrees: degreeMeasurements,
       }) })
       return
     }
@@ -62,7 +69,7 @@ self.onmessage = async ({ data }) => {
         sa: data.sa ? 10 : 0,
         complete: data.complete,
         paperless: false,
-        measurements: models[data.model],
+        measurements: { ...models[data.model], ...(data.overrides || {}) },
         options: data.options || {},
         only: data.only?.length ? data.only : undefined,
       }
