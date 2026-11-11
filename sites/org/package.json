@@ -22,7 +22,7 @@
   "dependencies": {
     "@docusaurus/core": "^3.9.1",
     "@docusaurus/plugin-content-blog": "^3.9.1",
-    "@docusaurus/plugin-css-cascade-layers": "^3.9.1",
+    "@docusaurus/plugin-css-cascade-layers": "^3.10.2",
     "@docusaurus/preset-classic": "^3.9.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
