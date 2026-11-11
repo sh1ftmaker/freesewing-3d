@@ -1,0 +1,25 @@
+{
+  "name": "freesewing-webapp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "0.170.0",
+    "bezier-js": "6.1.4",
+    "hooks": "0.3.2",
+    "lodash": "^4.17.21",
+    "lodash.get": "4.4.2",
+    "lodash.set": "4.3.2",
+    "lodash.unset": "4.5.2",
+    "lodash.clonedeep": "^4.5.0",
+    "slugify": "^1.6.6",
+    "tlds": "^1.255.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

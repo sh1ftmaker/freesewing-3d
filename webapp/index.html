@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FreeSewing 3D</title>
+<link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+<aside id="panel">
+  <h1>FreeSewing <span>3D</span></h1>
+  <label>Design <select id="design"></select></label>
+  <label>Measurements <select id="model"></select></label>
+  <label>Seam allowance <input id="sa" type="checkbox" checked /></label>
+  <label>Complete (details) <input id="complete" type="checkbox" checked /></label>
+  <label>Parts spacing <input id="explode" type="range" min="0" max="1" step="0.01" value="0" /></label>
+  <label>Fabric thickness <input id="thick" type="range" min="0" max="30" step="1" value="4" /></label>
+  <label>Drape <input id="drape" type="range" min="0" max="1" step="0.01" value="0" /></label>
+  <label>Show snippets/points <input id="points" type="checkbox" /></label>
+  <h2>Parts</h2>
+  <div id="parts"></div>
+  <h2>Options</h2>
+  <div id="options"></div>
+  <pre id="log"></pre>
+  <p class="credit">Unofficial viewer built on <a href="https://freesewing.org" target="_blank" rel="noopener">FreeSewing</a> (MIT, <a href="https://codeberg.org/freesewing/freesewing" target="_blank" rel="noopener">source</a>). Not affiliated with or endorsed by the FreeSewing project.</p>
+</aside>
+<main id="view"><div id="status">Loading…</div></main>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
