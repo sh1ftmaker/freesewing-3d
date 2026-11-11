@@ -47,7 +47,7 @@
     "hooks": "0.3.2",
     "lodash.get": "4.4.2",
     "lodash.set": "4.3.2",
-    "lodash.unset": "4.5.2",
+    "lodash.unset": "4.18.0",
     "lodash.clonedeep": "^4.5.0"
   },
   "devDependencies": {
