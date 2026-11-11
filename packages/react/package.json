@@ -120,7 +120,7 @@
     "mustache": "^4.2.0",
     "pdfkit": "^0.16.0",
     "react-diff-viewer-continued": "^4.0.5",
-    "react-dropzone": "^14.3.5",
+    "react-dropzone": "^20.2.0",
     "react-zoom-pan-pinch": "^3.7.0",
     "svg-to-pdfkit": "^0.1.8",
     "use-local-storage-state": "^19.5.0",
