@@ -25,3 +25,5 @@ input[type=range]{width:130px}
 #meas label{display:grid;grid-template-columns:1fr 80px 58px;gap:6px}
 #meas input[type=range]{width:80px}#meas input[type=number]{width:58px;max-width:58px}
 #meas label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#meas label{grid-template-columns:1fr 80px 74px}#meas .num{display:flex;align-items:center;gap:3px}#meas .u{color:var(--mut);font-size:11px;width:18px}
+#meas label{grid-template-columns:1fr 66px 92px}#meas input[type=range]{width:66px}#meas .u{width:24px;overflow:visible;white-space:nowrap}

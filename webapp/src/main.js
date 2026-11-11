@@ -155,7 +155,10 @@ async function renderMeasurements() {
     }
     r.oninput = () => set(+r.value)
     n.onchange = () => set(+n.value)
-    l.append(r, n)
+    const wrap = document.createElement('div'); wrap.className = 'num'
+    const u = document.createElement('span'); u.className = 'u'; u.textContent = isDeg ? '°' : 'mm'
+    wrap.append(n, u)
+    l.append(r, wrap)
     box.append(l)
   }
 }
